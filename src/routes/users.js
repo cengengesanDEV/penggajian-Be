@@ -20,12 +20,14 @@ function uploadFile(req, res, next) {
   });
 }
 
-const { register } = require("../controller/users.js");
+const { register, getData } = require("../controller/users.js");
 
 usersRouter.post(
   "/",
   validate.body("fullName", "password", "idDivision", "role", "basicSalary"),
   register
 );
+
+usersRouter.get("/", isLogin(), getData);
 
 module.exports = usersRouter;

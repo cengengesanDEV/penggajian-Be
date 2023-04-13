@@ -12,8 +12,20 @@ const register = async (req, res) => {
   }
 };
 
+const getData = async (req, res) => {
+  try {
+    const { userPayload } = req;
+    const response = await userRepo.getDataById(userPayload);
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const userController = {
   register,
+  getData,
 };
 
 module.exports = userController;

@@ -9,7 +9,7 @@ const login = (body) => {
     const { fullName, password } = body;
     const jwtr = new JWTR(client);
     const getPasswordsByEmailValues =
-      "select id, fullName, password, role from users where fullName = $1";
+      "select id, fullname, password, role from users where fullname = $1";
     const getPasswordsEmailValues = [fullName];
     postgreDb.query(
       getPasswordsByEmailValues,
@@ -20,11 +20,11 @@ const login = (body) => {
           return reject({ status: 500, msg: "internal server error" });
         }
         if (response.rows.length === 0)
-          return reject({ status: 401, msg: "full name/password wrong" });
+          return reject({ status: 401, msg: "full name or password wrong" });
         // 3. Process Login => create jwt => return jwt to users
         const payload = {
           userId: response.rows[0].id,
-          fullName: response.rows[0].fullName,
+          fullname: response.rows[0].fullname,
           role: response.rows[0].role,
         };
         const hashedPasswords = response.rows[0].password; // <= Get passwords from database
