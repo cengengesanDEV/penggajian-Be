@@ -56,7 +56,6 @@ const register = (body) => {
 
 const getDataById = (payload) => {
   return new Promise((resolve, reject) => {
-    console.log(payload.idUser);
     postgreDb.query(
       "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary from users inner join division on division.id = users.id_division where users.id = $1",
       [payload.userId],
