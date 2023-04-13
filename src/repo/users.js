@@ -73,9 +73,40 @@ const getDataById = (payload) => {
   });
 };
 
+const profile = (body, token) => {
+  return new Promise((resolve, reject) => {
+    let query = "update users set ";
+    const values = [];
+    const timestamp = Date.now() / 1000;
+    Object.keys(body).forEach((key, idx, array) => {
+      if (idx === array.length - 1) {
+        query += `${key} = $${idx + 1},updated_at = to_timestamp($${
+          idx + 2
+        }) where id = $${idx + 3} returning *`;
+        values.push(body[key], timestamp, token);
+        console.log(values);
+        console.log(query);
+        return;
+      }
+      query += `${key} = $${idx + 1},`;
+      values.push(body[key]);
+    });
+    postgreDb
+      .query(query, values)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+  });
+};
+
 const userRepo = {
   register,
   getDataById,
+  profile,
 };
 
 module.exports = userRepo;

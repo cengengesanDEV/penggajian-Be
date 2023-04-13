@@ -20,7 +20,7 @@ function uploadFile(req, res, next) {
   });
 }
 
-const { register, getData } = require("../controller/users.js");
+const { register, getData, profile } = require("../controller/users.js");
 
 usersRouter.post(
   "/",
@@ -29,5 +29,14 @@ usersRouter.post(
 );
 
 usersRouter.get("/", isLogin(), getData);
+usersRouter.patch(
+  "/profile",
+  isLogin(),
+  allowedRole("user"),
+  uploadFile,
+  cloudinaryUploader,
+  validate.body("usename", "email", "image", "phone_number", "address"),
+  profile
+);
 
 module.exports = usersRouter;
