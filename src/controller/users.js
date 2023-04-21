@@ -12,7 +12,7 @@ const register = async (req, res) => {
   }
 };
 
-const getData = async (req, res) => {
+const getDataById = async (req, res) => {
   try {
     const { userPayload } = req;
     const response = await userRepo.getDataById(userPayload);
@@ -44,7 +44,7 @@ const profile = async (req, res) => {
 
 const userController = {
   register,
-  getData,
+  getDataById,
   profile,
 };
 

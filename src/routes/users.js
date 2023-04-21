@@ -20,7 +20,7 @@ function uploadFile(req, res, next) {
   });
 }
 
-const { register, getData, profile } = require("../controller/users.js");
+const { register, getDataById, profile } = require("../controller/users.js");
 
 usersRouter.post(
   "/",
@@ -28,14 +28,21 @@ usersRouter.post(
   register
 );
 
-usersRouter.get("/", isLogin(), getData);
+usersRouter.get("/", isLogin(), getDataById);
 usersRouter.patch(
   "/profile",
   isLogin(),
   allowedRole("user"),
   uploadFile,
   cloudinaryUploader,
-  validate.body("usename", "email", "image", "phone_number", "address"),
+  validate.body(
+    "username",
+    "email",
+    "image",
+    "phone_number",
+    "address",
+    "birth_date"
+  ),
   profile
 );
 
