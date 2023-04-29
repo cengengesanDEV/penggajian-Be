@@ -4,7 +4,7 @@ const sendResponse = require("../helper/sendResponse");
 const absentEntry = async (req, res) => {
   try {
     const { userPayload } = req;
-    const response = absentRepo.absentEntry(userPayload.userId);
+    const response = await absentRepo.absentEntry(userPayload.userId);
     sendResponse.success(res, response.status, response);
   } catch (error) {
     console.log("error ini:", error);
@@ -14,7 +14,7 @@ const absentEntry = async (req, res) => {
 
 const absentOut = async (req, res) => {
   try {
-    const response = absentRepo.absentOut(req.userPayload.userId);
+    const response = await absentRepo.absentOut(req.userPayload.userId);
     sendResponse.success(res, response.status, response);
   } catch (error) {
     console.log(error);
@@ -22,6 +22,53 @@ const absentOut = async (req, res) => {
   }
 };
 
-const absentController = { absentEntry, absentOut };
+const getAbsenByDate = async (req, res) => {
+  try {
+    const response = await absentRepo.getAbsenFilterDate(
+      req.userPayload.userId,
+      req.query.month,
+      req.query.year
+    );
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
+const getAbsenById = async (req, res) => {
+  try {
+    const response = await absentRepo.getAbsenById(
+      req.params.id,
+      req.query.month,
+      req.query.year
+    );
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
+const getAbsenEmployee = async (req, res) => {
+  try {
+    const response = await absentRepo.getAbsenEmployee(
+      req.query.month,
+      req.query.year
+    );
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
+const absentController = {
+  absentEntry,
+  absentOut,
+  getAbsenByDate,
+  getAbsenById,
+  getAbsenEmployee,
+};
 
 module.exports = absentController;

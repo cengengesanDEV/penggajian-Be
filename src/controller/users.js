@@ -23,6 +23,16 @@ const getDataById = async (req, res) => {
   }
 };
 
+const getDataAllKaryawan = async (req, res) => {
+  try {
+    const response = await userRepo.getDataAllKaryawan();
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const profile = async (req, res) => {
   try {
     if (req.file) {
@@ -46,6 +56,7 @@ const userController = {
   register,
   getDataById,
   profile,
+  getDataAllKaryawan,
 };
 
 module.exports = userController;

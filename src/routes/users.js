@@ -20,10 +20,17 @@ function uploadFile(req, res, next) {
   });
 }
 
-const { register, getDataById, profile } = require("../controller/users.js");
+const {
+  register,
+  getDataById,
+  profile,
+  getDataAllKaryawan,
+} = require("../controller/users.js");
 
 usersRouter.post(
   "/",
+  isLogin(),
+  allowedRole("hrd"),
   validate.body("fullName", "password", "idDivision", "role", "basicSalary"),
   register
 );
@@ -45,5 +52,7 @@ usersRouter.patch(
   ),
   profile
 );
+
+usersRouter.get("/all-karyawan", isLogin(), getDataAllKaryawan);
 
 module.exports = usersRouter;
