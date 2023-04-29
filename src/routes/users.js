@@ -25,6 +25,7 @@ const {
   getDataById,
   profile,
   getDataAllKaryawan,
+  getDataKaryawanById,
 } = require("../controller/users.js");
 
 usersRouter.post(
@@ -54,5 +55,7 @@ usersRouter.patch(
 );
 
 usersRouter.get("/all-karyawan", getDataAllKaryawan);
+
+usersRouter.get("/karyawan/:id", getDataKaryawanById);
 
 module.exports = usersRouter;

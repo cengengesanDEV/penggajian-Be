@@ -73,6 +73,25 @@ const getDataById = (payload) => {
   });
 };
 
+const getDataKaryawanById = (id) => {
+  return new Promise((resolve, reject) => {
+    postgreDb.query(
+      "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary from users inner join division on division.id = users.id_division where users.id = $1",
+      [id],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject({
+            status: 500,
+            msg: "internal server error",
+          });
+        }
+        resolve({ status: 200, msg: "data found", data: result.rows[0] });
+      }
+    );
+  });
+};
+
 const getDataAllKaryawan = () => {
   return new Promise((resolve, reject) => {
     postgreDb.query(
@@ -127,6 +146,7 @@ const userRepo = {
   getDataById,
   profile,
   getDataAllKaryawan,
+  getDataKaryawanById,
 };
 
 module.exports = userRepo;
