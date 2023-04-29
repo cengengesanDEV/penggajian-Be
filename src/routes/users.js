@@ -53,6 +53,6 @@ usersRouter.patch(
   profile
 );
 
-usersRouter.get("/all-karyawan", isLogin(), getDataAllKaryawan);
+usersRouter.get("/all-karyawan", getDataAllKaryawan);
 
 module.exports = usersRouter;
