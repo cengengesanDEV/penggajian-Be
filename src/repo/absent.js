@@ -137,7 +137,7 @@ const getAbsenById = (id, month, year) => {
     const prevDate = `${year}-${month - 1}-25`;
     const date = `${year}-${month}-25`;
     const query =
-      "select clock_in,clock_out,description,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date < $2 and date > $3 order by absensi.date asc";
+      "select clock_in,clock_out,description,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date < $2 and date > $3 and clock_out is not null order by absensi.date asc";
     postgreDb.query(query, [id, date, prevDate], (err, result) => {
       let response = [];
       result.rows.forEach((value) => {
