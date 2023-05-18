@@ -134,22 +134,22 @@ const getAbsenFilterDate = (id, month, year) => {
 
 const getAbsenById = (id, month, year) => {
   return new Promise((resolve, reject) => {
-    const prevDate = `${year}-${month - 1}-25`;
+    const prevDate =
+      month == 1 ? `${year - 1}-12-25` : `${year}-${month - 1}-25`;
+    console.log(month);
     const date = `${year}-${month}-25`;
     const query =
       "select clock_in,clock_out,description,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date < $2 and date > $3 and clock_out is not null order by absensi.date asc";
     postgreDb.query(query, [id, date, prevDate], (err, result) => {
       let response = [];
-      if (response?.rows) {
-        result.rows.forEach((value) => {
-          response.push({
-            clockin: `${value.clock_in}`.substring(0, 8),
-            clockout: `${value.clock_out}`.substring(0, 8),
-            description: value.description,
-            date: `${value.year}-${value.month}-${value.day}`,
-          });
+      result?.rows?.forEach((value) => {
+        response.push({
+          clockin: `${value.clock_in}`.substring(0, 8),
+          clockout: `${value.clock_out}`.substring(0, 8),
+          description: value.description,
+          date: `${value.year}-${value.month}-${value.day}`,
         });
-      }
+      });
       if (err) {
         console.log(err);
         return reject({ status: 500, msg: "internal server error" });
