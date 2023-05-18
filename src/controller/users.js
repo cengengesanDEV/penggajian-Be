@@ -25,7 +25,7 @@ const getDataById = async (req, res) => {
 
 const getDataAllKaryawan = async (req, res) => {
   try {
-    const response = await userRepo.getDataAllKaryawan();
+    const response = await userRepo.getDataAllKaryawan(req.query.search);
     sendResponse.success(res, response.status, response);
   } catch (error) {
     console.log(error);

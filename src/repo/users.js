@@ -92,22 +92,24 @@ const getDataKaryawanById = (id) => {
   });
 };
 
-const getDataAllKaryawan = () => {
+const getDataAllKaryawan = (search) => {
   return new Promise((resolve, reject) => {
-    postgreDb.query(
-      "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary from users join division on division.id = users.id_division where not users.role = 'admin'",
-      [],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          return reject({
-            status: 500,
-            msg: "internal server error",
-          });
-        }
-        resolve({ status: 200, msg: "data found", data: result.rows });
+    let query =
+      "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary from users join division on division.id = users.id_division where not users.role = 'admin'";
+    if (query !== "") {
+      query = `select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary from users join division on division.id = users.id_division where not users.role = 'admin' and users.fullname like '%${search}%'`;
+    }
+    console.log(query);
+    postgreDb.query(query, [], (err, result) => {
+      if (err) {
+        console.log(err);
+        return reject({
+          status: 500,
+          msg: "internal server error",
+        });
       }
-    );
+      resolve({ status: 200, msg: "data found", data: result.rows });
+    });
   });
 };
 
