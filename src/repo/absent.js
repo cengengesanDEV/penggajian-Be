@@ -139,13 +139,14 @@ const getAbsenById = (id, month, year) => {
     console.log(month);
     const date = `${year}-${month}-25`;
     const query =
-      "select clock_in,clock_out,description,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date < $2 and date > $3 and clock_out is not null order by absensi.date asc";
+      "select clock_in,clock_out,description,status,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date < $2 and date > $3 and clock_out is not null order by absensi.date asc";
     postgreDb.query(query, [id, date, prevDate], (err, result) => {
       let response = [];
       result?.rows?.forEach((value) => {
         response.push({
           clockin: `${value.clock_in}`.substring(0, 8),
           clockout: `${value.clock_out}`.substring(0, 8),
+          status: value.status,
           description: value.description,
           date: `${value.year}-${value.month}-${value.day}`,
         });
@@ -155,7 +156,7 @@ const getAbsenById = (id, month, year) => {
         return reject({ status: 500, msg: "internal server error" });
       }
       const queryGetUsers =
-        "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary from users inner join division on division.id = users.id_division where users.id = $1";
+        "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.nik,users.birth_date from users inner join division on division.id = users.id_division where users.id = $1";
       postgreDb.query(queryGetUsers, [id], (err, result) => {
         if (err) {
           console.log(err);
@@ -170,10 +171,12 @@ const getAbsenById = (id, month, year) => {
           phone_number: variable.phone_number,
           address: variable.address,
           basic_salary: variable.basic_salary,
+          nik: variable.nik,
+          birth_date: variable.birth_date,
           data_absent: response,
         };
         const checkIzinQuery =
-          "SELECT COUNT(CASE WHEN absensi.description  = 'entry' then 1 end) as jumblah_masuk,COUNT(CASE WHEN absensi.description  = 'sick' then 1 end) as jumblah_izin from absensi where date < $1 and date > $2 and id_users = $3;";
+          "SELECT COUNT(CASE WHEN absensi.status  = 'masuk' and absensi.clock_out is not null then 1 end) as jumblah_masuk,COUNT(CASE WHEN absensi.status  = 'izin' then 1 end) as jumblah_izin,COUNT(CASE WHEN absensi.status  = 'sakit' then 1 end) as jumblah_sakit from absensi where date < $1 and date > $2 and id_users = $3;";
         postgreDb.query(checkIzinQuery, [date, prevDate, id], (err, result) => {
           if (err) {
             console.log(err);
@@ -181,8 +184,9 @@ const getAbsenById = (id, month, year) => {
           }
           responseData = {
             ...responseData,
-            jumblah_masuk: result.rows[0].jumblah_masuk,
-            jumblah_izin: result.rows[0].jumblah_izin,
+            jumlah_masuk: result.rows[0].jumblah_masuk,
+            jumlah_izin: result.rows[0].jumblah_izin,
+            jumblah_sakit: result.rows[0].jumblah_sakit,
           };
           return resolve({
             status: 200,
