@@ -45,6 +45,15 @@ const getDataKaryawanById = async (req, res) => {
     sendResponse.error(res, error.status, error);
   }
 };
+const getDivision = async (req, res) => {
+  try {
+    const response = await userRepo.getDivision();
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
 
 const profile = async (req, res) => {
   try {
@@ -71,6 +80,7 @@ const userController = {
   profile,
   getDataAllKaryawan,
   getDataKaryawanById,
+  getDivision,
 };
 
 module.exports = userController;
