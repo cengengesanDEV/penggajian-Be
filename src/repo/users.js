@@ -163,7 +163,7 @@ const getDivision = () => {
 
 const getNameUsers = () => {
   return new Promise((resolve, reject) => {
-    let query = "select fullname from users";
+    let query = "select id,fullname from users ";
     console.log(query);
     postgreDb.query(query, [], (err, result) => {
       if (err) {
