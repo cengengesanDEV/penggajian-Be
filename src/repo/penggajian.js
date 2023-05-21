@@ -20,6 +20,24 @@ const AddLemburan = (body) => {
   });
 };
 
+const getLemburan = (date) => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "select users.fullname,division.position,lembur.jam_lembur,lembur.date,lembur.description from lembur inner join users on users.id = lembur.id_users inner join division on division.id = users.id_division where lembur.date = $1";
+    postgreDb.query(query, [date], (err, result) => {
+      if (err) {
+        console.log(err);
+        return reject({ status: 500, msg: "internal server error" });
+      }
+      return resolve({
+        status: 200,
+        msg: "get lemburan found",
+        data: result.rows,
+      });
+    });
+  });
+};
+
 const getGajiByIdkaryawan = (id_users, month, year) => {
   return new Promise((resolve, reject) => {
     const prevDate =
@@ -84,6 +102,7 @@ const addGaji = (body) => {
 
 const lemburanRepo = {
   AddLemburan,
+  getLemburan,
   getGajiByIdkaryawan,
   addGaji,
 };

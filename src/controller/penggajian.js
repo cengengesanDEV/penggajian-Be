@@ -12,6 +12,17 @@ const AddLemburan = async (req, res) => {
   }
 };
 
+const getLemburan = async (req, res) => {
+  try {
+    const { query } = req;
+    const response = await penggajianRepo.getLemburan(query.date);
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const getGajianByIdKaryawan = async (req, res) => {
   try {
     const { params, query } = req;
@@ -40,6 +51,7 @@ const AddGaji = async (req, res) => {
 
 const penggajianController = {
   AddLemburan,
+  getLemburan,
   getGajianByIdKaryawan,
   AddGaji,
 };

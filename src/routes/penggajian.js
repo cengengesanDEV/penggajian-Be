@@ -6,8 +6,8 @@ const {
   AddLemburan,
   getGajianByIdKaryawan,
   AddGaji,
+  getLemburan,
 } = require("../controller/penggajian.js");
-const { addGaji } = require("../repo/penggajian.js");
 
 penggajianRouter.post(
   "/add-lembur",
@@ -16,12 +16,14 @@ penggajianRouter.post(
   AddLemburan
 );
 
+penggajianRouter.get("/lembur", isLogin(), allowedRole("hrd"), getLemburan);
+
 penggajianRouter.get(
   "/gaji/:id",
   isLogin(),
   allowedRole("hrd"),
   getGajianByIdKaryawan
 );
-penggajianRouter.post("/gaji", isLogin(), allowedRole("hrd"), addGaji);
+penggajianRouter.post("/gaji", isLogin(), allowedRole("hrd"), AddGaji);
 
 module.exports = penggajianRouter;
