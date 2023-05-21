@@ -2,18 +2,13 @@ const postgreDb = require("../config/postgre.js");
 
 const AddLemburan = (body) => {
   return new Promise((resolve, reject) => {
-    const { id_users, jam_lembur, desc } = body;
+    const { id_users, jam_lembur, desc, date } = body;
     const timestamp = Date.now() / 1000;
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
-    const dateApp = `${year}-${month + 1}-${day}`;
     const query =
       "insert into lembur(id_users,jam_lembur,date,description,created_at) values($1,$2,$3,$4,to_timestamp($5))";
     postgreDb.query(
       query,
-      [id_users, jam_lembur, dateApp, desc, timestamp],
+      [id_users, jam_lembur, date, desc, timestamp],
       (err) => {
         if (err) {
           console.log(err);
