@@ -20,6 +20,7 @@ const register = (body) => {
       password,
       birth_date,
     } = body;
+    const validasiNik = "select nik from users where nik = $1";
     const validasiFullname = `select email from users where email like $1`;
     postgreDb.query(validasiFullname, [email], (error, resFullName) => {
       if (error) {
@@ -30,48 +31,56 @@ const register = (body) => {
         return reject({ status: 401, msg: "email already use" });
       }
 
-      // Hash Password
-      bcrypt.hash(password, 10, (error, hashedPasswords) => {
-        if (error) {
-          console.log(error);
-          return reject({ status: 500, msg: "Internal Server error" });
+      postgreDb.query(validasiNik, [nik], (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject({ status: 500, msg: "internal server error" });
         }
-        const timestamp = Date.now() / 1000;
-        postgreDb.query(
-          query,
-          [
-            email,
-            nik,
-            username,
-            fullname,
-            hashedPasswords,
-            image,
-            id_division,
-            role,
-            phone_number,
-            address,
-            basic_salary,
-            overtime_salary,
-            note,
-            birth_date,
-            timestamp,
-            timestamp,
-          ],
-          (error, response) => {
-            if (error) {
-              console.log(error);
-              return reject({
-                status: 500,
-                msg: "Internal Server Error",
+        if (result.rows.length > 0) {
+          return reject({ status: 401, msg: "nik already use" });
+        }
+        bcrypt.hash(password, 10, (error, hashedPasswords) => {
+          if (error) {
+            console.log(error);
+            return reject({ status: 500, msg: "Internal Server error" });
+          }
+          const timestamp = Date.now() / 1000;
+          postgreDb.query(
+            query,
+            [
+              email,
+              nik,
+              username,
+              fullname,
+              hashedPasswords,
+              image,
+              id_division,
+              role,
+              phone_number,
+              address,
+              basic_salary,
+              overtime_salary,
+              note,
+              birth_date,
+              timestamp,
+              timestamp,
+            ],
+            (error, response) => {
+              if (error) {
+                console.log(error);
+                return reject({
+                  status: 500,
+                  msg: "Internal Server Error",
+                });
+              }
+              resolve({
+                status: 200,
+                msg: "register sucess",
+                data: response.rows[0],
               });
             }
-            resolve({
-              status: 200,
-              msg: "register sucess",
-              data: response.rows[0],
-            });
-          }
-        );
+          );
+        });
       });
     });
   });
