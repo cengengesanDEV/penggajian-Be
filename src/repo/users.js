@@ -3,18 +3,31 @@ const bcrypt = require("bcrypt"); // kon
 
 const register = (body) => {
   return new Promise((resolve, reject) => {
-    let query = `insert into users(password,id_division,role,basic_salary,fullname,overtime_salary,created_at,updated_at) values($1, $2,$3 ,$4,$5,$6,to_timestamp($7),to_timestamp($8))`;
-    const { fullName, password, idDivision, basicSalary, overtimeSalary } =
-      body;
-    const role = "user";
-    const validasiFullname = `select fullname from users where fullname like $1`;
-    postgreDb.query(validasiFullname, [fullName], (error, resFullName) => {
+    let query = `insert into users(email,nik,username,fullname,password,image,id_division,role,phone_number,address,basic_salary,overtime_salary,note,birth_date,created_at,updated_at) values($1, $2,$3 ,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,to_timestamp($15),to_timestamp($16))`;
+    const {
+      email,
+      nik,
+      username,
+      fullname,
+      image,
+      id_division,
+      phone_number,
+      address,
+      basic_salary,
+      overtime_salary,
+      role,
+      note,
+      password,
+      birth_date,
+    } = body;
+    const validasiFullname = `select email from users where email like $1`;
+    postgreDb.query(validasiFullname, [email], (error, resFullName) => {
       if (error) {
         console.log(error);
         return reject({ status: 500, msg: "Internal Server Error" });
       }
       if (resFullName.rows.length > 0) {
-        return reject({ status: 401, msg: "full name already use" });
+        return reject({ status: 401, msg: "email already use" });
       }
 
       // Hash Password
@@ -27,12 +40,20 @@ const register = (body) => {
         postgreDb.query(
           query,
           [
+            email,
+            nik,
+            username,
+            fullname,
             hashedPasswords,
-            idDivision,
+            image,
+            id_division,
             role,
-            basicSalary,
-            fullName,
-            overtimeSalary,
+            phone_number,
+            address,
+            basic_salary,
+            overtime_salary,
+            note,
+            birth_date,
             timestamp,
             timestamp,
           ],

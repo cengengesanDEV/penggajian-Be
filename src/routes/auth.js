@@ -5,7 +5,7 @@ const validate = require("../middleware/validate");
 const { login, logout } = require("../controller/auth.js");
 
 // Login
-authRouter.post("/", validate.body("fullName", "password"), login);
+authRouter.post("/", validate.body("email", "password"), login);
 // Logout
 authRouter.delete("/", isLogin(), logout);
 

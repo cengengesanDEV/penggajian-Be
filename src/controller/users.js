@@ -4,6 +4,9 @@ const sendResponse = require("../helper/sendResponse");
 const register = async (req, res) => {
   try {
     const { body } = req;
+    if (req.file) {
+      body.image = req.file.secure_url;
+    }
     const response = await userRepo.register(body);
     sendResponse.success(res, response.status, response);
   } catch (error) {

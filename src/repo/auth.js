@@ -6,11 +6,12 @@ const client = require("../config/redis");
 // Login Authentikasi
 const login = (body) => {
   return new Promise((resolve, reject) => {
-    const { fullName, password } = body;
+    const { email, password } = body;
     const jwtr = new JWTR(client);
+    console.log(email);
     const getPasswordsByEmailValues =
-      "select id, fullname, password, role from users where fullname = $1";
-    const getPasswordsEmailValues = [fullName];
+      "select id,email ,fullname, password, role from users where email = $1";
+    const getPasswordsEmailValues = [email];
     postgreDb.query(
       getPasswordsByEmailValues,
       getPasswordsEmailValues,
@@ -19,8 +20,9 @@ const login = (body) => {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
         }
+        console.log(response.rows);
         if (response.rows.length === 0)
-          return reject({ status: 401, msg: "full name or password wrong" });
+          return reject({ status: 401, msg: "email or password wrong" });
         // 3. Process Login => create jwt => return jwt to users
         const payload = {
           userId: response.rows[0].id,

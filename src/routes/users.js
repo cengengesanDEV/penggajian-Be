@@ -32,14 +32,8 @@ usersRouter.post(
   "/",
   isLogin(),
   allowedRole("hrd"),
-  validate.body(
-    "fullName",
-    "password",
-    "idDivision",
-    "role",
-    "basicSalary",
-    "overtimeSalary"
-  ),
+  uploadFile,
+  cloudinaryUploader,
   register
 );
 
