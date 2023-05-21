@@ -32,7 +32,14 @@ usersRouter.post(
   "/",
   isLogin(),
   allowedRole("hrd"),
-  validate.body("fullName", "password", "idDivision", "role", "basicSalary"),
+  validate.body(
+    "fullName",
+    "password",
+    "idDivision",
+    "role",
+    "basicSalary",
+    "overtimeSalary"
+  ),
   register
 );
 

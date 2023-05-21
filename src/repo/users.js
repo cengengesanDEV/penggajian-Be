@@ -3,8 +3,9 @@ const bcrypt = require("bcrypt"); // kon
 
 const register = (body) => {
   return new Promise((resolve, reject) => {
-    let query = `insert into users(password,id_division,role,basic_salary,fullname,created_at,updated_at) values($1, $2,$3 ,$4,$5, to_timestamp($6),to_timestamp($7))`;
-    const { fullName, password, idDivision, basicSalary } = body;
+    let query = `insert into users(password,id_division,role,basic_salary,fullname,overtime_salary,created_at,updated_at) values($1, $2,$3 ,$4,$5,$6,to_timestamp($7),to_timestamp($8))`;
+    const { fullName, password, idDivision, basicSalary, overtimeSalary } =
+      body;
     const role = "user";
     const validasiFullname = `select fullname from users where fullname like $1`;
     postgreDb.query(validasiFullname, [fullName], (error, resFullName) => {
@@ -31,6 +32,7 @@ const register = (body) => {
             role,
             basicSalary,
             fullName,
+            overtimeSalary,
             timestamp,
             timestamp,
           ],
@@ -57,7 +59,7 @@ const register = (body) => {
 const getDataById = (payload) => {
   return new Promise((resolve, reject) => {
     postgreDb.query(
-      "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary from users inner join division on division.id = users.id_division where users.id = $1",
+      "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik from users inner join division on division.id = users.id_division where users.id = $1",
       [payload.userId],
       (err, result) => {
         if (err) {

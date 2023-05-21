@@ -1,6 +1,5 @@
 const absentRouter = require("express").Router();
 const isLogin = require("../middleware/isLogin.js");
-const validate = require("../middleware/validate");
 const allowedRole = require("../middleware/allowedRole.js");
 
 const {
