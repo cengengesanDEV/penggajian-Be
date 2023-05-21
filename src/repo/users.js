@@ -152,6 +152,23 @@ const getDivision = () => {
   });
 };
 
+const getNameUsers = () => {
+  return new Promise((resolve, reject) => {
+    let query = "select fullname from users";
+    console.log(query);
+    postgreDb.query(query, [], (err, result) => {
+      if (err) {
+        console.log(err);
+        return reject({
+          status: 500,
+          msg: "internal server error",
+        });
+      }
+      resolve({ status: 200, msg: "data found", data: result.rows });
+    });
+  });
+};
+
 const profile = (body, token) => {
   return new Promise((resolve, reject) => {
     let query = "update users set ";
@@ -189,6 +206,7 @@ const userRepo = {
   getDataAllKaryawan,
   getDataKaryawanById,
   getDivision,
+  getNameUsers,
 };
 
 module.exports = userRepo;

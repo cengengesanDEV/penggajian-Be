@@ -27,6 +27,7 @@ const {
   getDataAllKaryawan,
   getDataKaryawanById,
   getDivision,
+  getNameUsers,
 } = require("../controller/users.js");
 
 usersRouter.post(
@@ -59,6 +60,8 @@ usersRouter.patch(
 usersRouter.get("/all-karyawan", getDataAllKaryawan);
 
 usersRouter.get("/division", getDivision);
+
+usersRouter.get("/name", getNameUsers);
 
 usersRouter.get("/karyawan/:id", getDataKaryawanById);
 
