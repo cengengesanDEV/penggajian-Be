@@ -83,6 +83,27 @@ const absentOut = (userId) => {
   });
 };
 
+const getAbsentNow = (usersId) => {
+  return new Promise((resolve, reject) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    const dateApp = `${year}-${month + 1}-${day}`;
+    const query = "select * from absent where id_users = $1 and date = $2";
+    postgreDb.query(query, [usersId, dateApp], (err, result) => {
+      if (err) {
+        console.log(err);
+        return reject({ status: 500, msg: "internal server error" });
+      }
+      if (!result.rows[0]) {
+        result.rows[0] = { date: null, clock_in: null };
+      }
+      return resolve({ status: 200, msg: "data found", msg: result.rows[0] });
+    });
+  });
+};
+
 const getAbsenFilterDate = (id, month, year) => {
   return new Promise((resolve, reject) => {
     if (!year || !month) {
@@ -230,6 +251,7 @@ const absentRepo = {
   getAbsenFilterDate,
   getAbsenById,
   getAbsenEmployee,
+  getAbsentNow,
 };
 
 module.exports = absentRepo;

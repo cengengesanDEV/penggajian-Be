@@ -5,6 +5,7 @@ const allowedRole = require("../middleware/allowedRole.js");
 const {
   absentEntry,
   absentOut,
+  absentNow,
   getAbsenByDate,
   getAbsenById,
   getAbsenEmployee,
@@ -12,6 +13,7 @@ const {
 
 absentRouter.post("/in", isLogin(), absentEntry);
 absentRouter.patch("/out", isLogin(), absentOut);
+absentRouter.patch("/now", isLogin(), absentNow);
 absentRouter.get("/", isLogin(), allowedRole("user"), getAbsenByDate);
 absentRouter.get("/employee/:id", isLogin(), getAbsenById);
 absentRouter.get("/employee", isLogin(), getAbsenEmployee);
