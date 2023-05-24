@@ -67,7 +67,7 @@ const absentOut = (userId) => {
     const time = `${hour}:${minute}:${second}`;
     const checkQuery =
       "select clock_in from absensi where id_users = $1 and absensi.date = $2";
-    postgreDb.query(checkQuery, [payload, dateApp], (Error, result) => {
+    postgreDb.query(checkQuery, [userId, dateApp], (Error, result) => {
       if (Error) {
         console.log(Error);
         return reject({ status: 500, msg: "internal server error" });
