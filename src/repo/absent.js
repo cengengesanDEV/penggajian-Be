@@ -34,6 +34,11 @@ const absentEntry = (payload) => {
             console.log(err);
             return reject({ status: 500, msg: "internal server error" });
           }
+          result.rows[0] = {
+            ...result.rows[0],
+            dateNow: dateApp,
+            timeNow: time,
+          };
           return resolve({
             status: 201,
             msg: "absent entry created",
