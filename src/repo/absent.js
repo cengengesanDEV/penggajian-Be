@@ -100,7 +100,7 @@ const getAbsentNow = (usersId) => {
       if (!result.rows[0]) {
         result.rows[0] = { date: null, clock_in: null };
       }
-      return resolve({ status: 200, msg: "data found", msg: result.rows[0] });
+      return resolve({ status: 200, msg: "data found", data: result.rows[0] });
     });
   });
 };
