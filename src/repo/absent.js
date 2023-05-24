@@ -122,6 +122,9 @@ const absentOut = (userId) => {
       if (!result.rows[0]) {
         return reject({ status: 400, msg: "you havent absent in today" });
       }
+      if (!result.rows[0].clock_in) {
+        return reject({ status: 400, msg: "you already absent today" });
+      }
       postgreDb.query(
         query,
         [time, timestamp, userId, dateApp],
