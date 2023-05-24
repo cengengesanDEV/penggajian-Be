@@ -91,7 +91,7 @@ const getAbsentNow = (usersId) => {
     const month = date.getMonth();
     const day = date.getDate();
     const dateApp = `${year}-${month + 1}-${day}`;
-    const query = "select * from absent where id_users = $1 and date = $2";
+    const query = "select * from absensi where id_users = $1 and date = $2";
     postgreDb.query(query, [usersId, dateApp], (err, result) => {
       if (err) {
         console.log(err);
