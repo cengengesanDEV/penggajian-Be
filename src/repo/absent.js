@@ -65,22 +65,34 @@ const absentOut = (userId) => {
     const minute = date.getMinutes();
     const second = date.getSeconds();
     const time = `${hour}:${minute}:${second}`;
-    postgreDb.query(
-      query,
-      [time, timestamp, userId, dateApp],
-      (error, result) => {
-        if (error) {
-          console.log(error);
-          return reject({ status: 500, msg: "internal server error" });
-        }
-        console.log(result.rows);
-        resolve({
-          status: 201,
-          msg: "absent out created",
-          data: result.rows[0],
-        });
+    const checkQuery =
+      "select clock_in from absensi where id_users = $1 and absensi.date = $2";
+    postgreDb.query(checkQuery, [payload, dateApp], (Error, result) => {
+      if (Error) {
+        console.log(Error);
+        return reject({ status: 500, msg: "internal server error" });
       }
-    );
+      console.log(result.rows);
+      if (!result.rows[0].clock_in) {
+        return reject({ status: 400, msg: "you havent absent in today" });
+      }
+      postgreDb.query(
+        query,
+        [time, timestamp, userId, dateApp],
+        (error, result) => {
+          if (error) {
+            console.log(error);
+            return reject({ status: 500, msg: "internal server error" });
+          }
+          console.log(result.rows);
+          resolve({
+            status: 201,
+            msg: "absent out created",
+            data: result.rows[0],
+          });
+        }
+      );
+    });
   });
 };
 
