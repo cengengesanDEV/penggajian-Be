@@ -73,7 +73,7 @@ const absentOut = (userId) => {
         return reject({ status: 500, msg: "internal server error" });
       }
       console.log(result.rows);
-      if (!result.rows[0].clock_in) {
+      if (!result.rows[0]) {
         return reject({ status: 400, msg: "you havent absent in today" });
       }
       postgreDb.query(
