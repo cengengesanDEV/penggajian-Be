@@ -71,7 +71,7 @@ const profile = async (req, res) => {
       req.body.image = req.file.secure_url;
     }
 
-    const response = await userRepo.profile(req.body, req.userPayload.userId);
+    const response = await userRepo.profile(req.body, req.params.id);
     sendResponse.success(res, 200, {
       msg: "Edit Profile Success",
       data: response.rows,

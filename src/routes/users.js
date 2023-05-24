@@ -41,9 +41,9 @@ usersRouter.post(
 
 usersRouter.get("/", isLogin(), getDataById);
 usersRouter.patch(
-  "/profile",
+  "/profile/:id",
   isLogin(),
-  allowedRole("user"),
+  allowedRole("hrd"),
   uploadFile,
   cloudinaryUploader,
   profile
