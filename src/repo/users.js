@@ -110,7 +110,7 @@ const getDataById = (payload) => {
 const getDataKaryawanById = (id) => {
   return new Promise((resolve, reject) => {
     postgreDb.query(
-      "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users inner join division on division.id = users.id_division where users.id = $1",
+      "select users.id,users.email,users.fullname,users.username,users.id_division,users.note,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users inner join division on division.id = users.id_division where users.id = $1",
       [id],
       (err, result) => {
         if (err) {
