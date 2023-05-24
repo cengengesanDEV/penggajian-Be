@@ -15,7 +15,10 @@ const absentEntry = async (req, res) => {
 const absentEntryDesc = async (req, res) => {
   try {
     const { userPayload } = req;
-    const response = await absentRepo.absentEntry(userPayload.userId, req.body);
+    const response = await absentRepo.absentEntryDesc(
+      userPayload.userId,
+      req.body
+    );
     sendResponse.success(res, response.status, response);
   } catch (error) {
     console.log("error ini:", error);
