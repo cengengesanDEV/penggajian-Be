@@ -55,17 +55,13 @@ const absentEntryDesc = (payload, body) => {
   return new Promise((resolve, reject) => {
     const { description, status } = body;
     const query =
-      "insert into absensi(id_users,date,clock_in,status,description,created_at,updated_at) values($1,$2,$3,$4,$5,to_timestamp($6),to_timestamp($7)) returning *";
+      "insert into absensi(id_users,date,status,description,created_at,updated_at) values($1,$2,$3,$4,to_timestamp($5),to_timestamp($6)) returning *";
     const timestamp = Date.now() / 1000;
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
     const dateApp = `${year}-${month + 1}-${day}`;
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    const second = date.getSeconds();
-    const time = `${hour}:${minute}:${second}`;
     const checkQuery =
       "select clock_in from absensi where id_users = $1 and absensi.date = $2";
     postgreDb.query(checkQuery, [payload, dateApp], (Error, result) => {
@@ -79,7 +75,7 @@ const absentEntryDesc = (payload, body) => {
       }
       postgreDb.query(
         query,
-        [payload, dateApp, time, status, description, timestamp, timestamp],
+        [payload, dateApp, status, description, timestamp, timestamp],
         (err, result) => {
           if (err) {
             console.log(err);
