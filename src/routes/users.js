@@ -46,14 +46,6 @@ usersRouter.patch(
   allowedRole("user"),
   uploadFile,
   cloudinaryUploader,
-  validate.body(
-    "username",
-    "email",
-    "image",
-    "phone_number",
-    "address",
-    "birth_date"
-  ),
   profile
 );
 
