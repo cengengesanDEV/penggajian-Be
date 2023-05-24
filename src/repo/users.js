@@ -129,9 +129,9 @@ const getDataKaryawanById = (id) => {
 const getDataAllKaryawan = (search) => {
   return new Promise((resolve, reject) => {
     let query =
-      "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users join division on division.id = users.id_division where not users.role = 'admin'";
+      "select users.id,users.email,users.fullname,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users join division on division.id = users.id_division where not users.role = 'admin'";
     if (query !== "") {
-      query = `select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users join division on division.id = users.id_division where not users.role = 'admin' and users.fullname like '%${search}%'`;
+      query = `select users.id,users.email,users.fullname,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users join division on division.id = users.id_division where not users.role = 'admin' and users.fullname like '%${search}%'`;
     }
     console.log(query);
     postgreDb.query(query, [], (err, result) => {
