@@ -3,9 +3,10 @@ const postgreDb = require("../config/postgre.js");
 const absentEntry = (payload) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into absensi(id_users,date,clock_in,description,created_at,updated_at) values($1,$2,$3,$4,to_timestamp($5),to_timestamp($6)) returning *";
+      "insert into absensi(id_users,date,clock_in,status,description,created_at,updated_at) values($1,$2,$3,$4,$5,to_timestamp($6),to_timestamp($7)) returning *";
     const timestamp = Date.now() / 1000;
-    const description = "entry";
+    const description = "-";
+    const status = "masuk";
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -28,7 +29,7 @@ const absentEntry = (payload) => {
       }
       postgreDb.query(
         query,
-        [payload, dateApp, time, description, timestamp, timestamp],
+        [payload, dateApp, time, status, description, timestamp, timestamp],
         (err, result) => {
           if (err) {
             console.log(err);
