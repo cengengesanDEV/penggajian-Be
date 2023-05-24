@@ -51,6 +51,56 @@ const absentEntry = (payload) => {
   });
 };
 
+const absentEntryDesc = (payload, body) => {
+  return new Promise((resolve, reject) => {
+    const { description, status } = body;
+    const query =
+      "insert into absensi(id_users,date,clock_in,status,description,created_at,updated_at) values($1,$2,$3,$4,$5,to_timestamp($6),to_timestamp($7)) returning *";
+    const timestamp = Date.now() / 1000;
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    const dateApp = `${year}-${month + 1}-${day}`;
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
+    const time = `${hour}:${minute}:${second}`;
+    const checkQuery =
+      "select clock_in from absensi where id_users = $1 and absensi.date = $2";
+    postgreDb.query(checkQuery, [payload, dateApp], (Error, result) => {
+      if (Error) {
+        console.log(Error);
+        return reject({ status: 500, msg: "internal server error" });
+      }
+      console.log(result.rows);
+      if (result.rows[0]?.clock_in) {
+        return reject({ status: 400, msg: "you already absent today" });
+      }
+      postgreDb.query(
+        query,
+        [payload, dateApp, time, status, description, timestamp, timestamp],
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            return reject({ status: 500, msg: "internal server error" });
+          }
+          result.rows[0] = {
+            ...result.rows[0],
+            dateNow: dateApp,
+            timeNow: time,
+          };
+          return resolve({
+            status: 201,
+            msg: "absent entry created",
+            data: result.rows[0],
+          });
+        }
+      );
+    });
+  });
+};
+
 const absentOut = (userId) => {
   return new Promise((resolve, reject) => {
     const query =
@@ -265,6 +315,7 @@ const absentRepo = {
   getAbsenById,
   getAbsenEmployee,
   getAbsentNow,
+  absentEntryDesc,
 };
 
 module.exports = absentRepo;

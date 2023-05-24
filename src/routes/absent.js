@@ -7,11 +7,13 @@ const {
   absentOut,
   absentNow,
   getAbsenByDate,
+  absentEntryDesc,
   getAbsenById,
   getAbsenEmployee,
 } = require("../controller/absent.js");
 
 absentRouter.post("/in", isLogin(), absentEntry);
+absentRouter.post("/not-in", isLogin(), absentEntryDesc);
 absentRouter.patch("/out", isLogin(), absentOut);
 absentRouter.get("/now", isLogin(), absentNow);
 absentRouter.get("/", isLogin(), allowedRole("user"), getAbsenByDate);

@@ -12,6 +12,17 @@ const absentEntry = async (req, res) => {
   }
 };
 
+const absentEntryDesc = async (req, res) => {
+  try {
+    const { userPayload } = req;
+    const response = await absentRepo.absentEntry(userPayload.userId, req.body);
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log("error ini:", error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const absentNow = async (req, res) => {
   try {
     const { userPayload } = req;
@@ -81,6 +92,7 @@ const absentController = {
   getAbsenById,
   getAbsenEmployee,
   absentNow,
+  absentEntryDesc,
 };
 
 module.exports = absentController;
