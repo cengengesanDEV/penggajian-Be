@@ -23,7 +23,7 @@ const AddLemburan = (body) => {
 const getLemburan = (date) => {
   return new Promise((resolve, reject) => {
     const query =
-      "select users.fullname,division.position,lembur.jam_lembur,lembur.date,lembur.description from lembur inner join users on users.id = lembur.id_users inner join division on division.id = users.id_division where lembur.date = $1";
+      "select users.fullname,division.position,lembur.jam_lembur,lembur.date,lembur.description,users.overtime_salary from lembur inner join users on users.id = lembur.id_users inner join division on division.id = users.id_division where lembur.date = $1";
     postgreDb.query(query, [date], (err, result) => {
       if (err) {
         console.log(err);
