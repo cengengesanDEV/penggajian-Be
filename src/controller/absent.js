@@ -49,7 +49,7 @@ const absentOut = async (req, res) => {
 
 const getAbsenByDate = async (req, res) => {
   try {
-    const response = await absentRepo.getAbsenFilterDate(
+    const response = await absentRepo.getAbsenById(
       req.userPayload.userId,
       req.query.month,
       req.query.year
