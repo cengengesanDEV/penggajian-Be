@@ -91,7 +91,7 @@ const register = (body) => {
 const getDataById = (payload) => {
   return new Promise((resolve, reject) => {
     postgreDb.query(
-      "select users.id,users.email,users.fullname,users.bank_name,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users inner join division on division.id = users.id_division where users.id = $1",
+      "select users.id,users.username,users.email,users.fullname,users.bank_name,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users inner join division on division.id = users.id_division where users.id = $1",
       [payload.userId],
       (err, result) => {
         if (err) {
