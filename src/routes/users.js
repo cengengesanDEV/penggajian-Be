@@ -28,6 +28,7 @@ const {
   getDataKaryawanById,
   getDivision,
   getNameUsers,
+  profileKaryawan,
 } = require("../controller/users.js");
 
 usersRouter.post(
@@ -50,13 +51,7 @@ usersRouter.patch(
   profile
 );
 
-usersRouter.patch(
-  "/profile-karyawan",
-  isLogin(),
-  uploadFile,
-  cloudinaryUploader,
-  profile
-);
+usersRouter.patch("/profile-karyawan", isLogin(), profileKaryawan);
 
 usersRouter.get("/all-karyawan", getDataAllKaryawan);
 
