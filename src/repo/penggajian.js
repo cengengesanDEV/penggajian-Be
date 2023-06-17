@@ -102,15 +102,20 @@ const getGajiByIdkaryawan = (id_users, month, year) => {
 const addGaji = (body) => {
   return new Promise((resolve, reject) => {
     const { id_users, tip, minus, total, date } = body;
+    const timestamp = Date.now() / 1000;
     const query =
       "insert into penggajian(id_users,tip_salary,minus_salary,total_salary,date_paid,created_at) values($1,$2,$3,$4,$5,to_timestamp($6))";
-    postgreDb.query(query, [id_users, tip, minus, total, date], (err) => {
-      if (err) {
-        console.log(err);
-        return reject({ status: 500, msg: "internal server error" });
+    postgreDb.query(
+      query,
+      [id_users, tip, minus, total, date, timestamp],
+      (err) => {
+        if (err) {
+          console.log(err);
+          return reject({ status: 500, msg: "internal server error" });
+        }
+        return resolve({ status: 201, msg: "penggajian created" });
       }
-      return resolve({ status: 201, msg: "penggajian created" });
-    });
+    );
   });
 };
 
