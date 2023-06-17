@@ -83,6 +83,25 @@ const profile = async (req, res) => {
   }
 };
 
+const profileKaryawan = async (req, res) => {
+  try {
+    if (req.file) {
+      var image = `/${req.file.public_id}.${req.file.format}`; //ubah filename
+      req.body.image = req.file.secure_url;
+    }
+
+    const response = await userRepo.profile(req.body, req.userPayload.userId);
+    sendResponse.success(res, 200, {
+      msg: "Edit Profile Success",
+      data: response.rows,
+      filename: image,
+    });
+  } catch (err) {
+    console.log(err);
+    sendResponse.error(res, 500, "internal server error");
+  }
+};
+
 const userController = {
   register,
   getDataById,
@@ -91,6 +110,7 @@ const userController = {
   getDataKaryawanById,
   getDivision,
   getNameUsers,
+  profileKaryawan,
 };
 
 module.exports = userController;

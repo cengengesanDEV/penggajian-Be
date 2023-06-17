@@ -16,7 +16,7 @@ absentRouter.post("/in", isLogin(), absentEntry);
 absentRouter.post("/not-in", isLogin(), absentEntryDesc);
 absentRouter.patch("/out", isLogin(), absentOut);
 absentRouter.get("/now", isLogin(), absentNow);
-absentRouter.get("/", isLogin(), allowedRole("user"), getAbsenByDate);
+absentRouter.get("/", isLogin(), getAbsenByDate);
 absentRouter.get("/employee/:id", isLogin(), getAbsenById);
 absentRouter.get("/employee", isLogin(), getAbsenEmployee);
 

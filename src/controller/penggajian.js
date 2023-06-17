@@ -38,6 +38,21 @@ const getGajianByIdKaryawan = async (req, res) => {
   }
 };
 
+const gajiKaryawan = async (req, res) => {
+  try {
+    const { query } = req;
+    const response = await penggajianRepo.getGajiByIdkaryawan(
+      req.userPayload.userId,
+      query.month,
+      query.year
+    );
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const AddGaji = async (req, res) => {
   try {
     const { body } = req;
@@ -54,6 +69,7 @@ const penggajianController = {
   getLemburan,
   getGajianByIdKaryawan,
   AddGaji,
+  gajiKaryawan,
 };
 
 module.exports = penggajianController;

@@ -7,6 +7,7 @@ const {
   getGajianByIdKaryawan,
   AddGaji,
   getLemburan,
+  gajiKaryawan,
 } = require("../controller/penggajian.js");
 
 penggajianRouter.post(
@@ -24,6 +25,9 @@ penggajianRouter.get(
   allowedRole("hrd"),
   getGajianByIdKaryawan
 );
+
+penggajianRouter.get("/gaji-karyawan", isLogin(), gajiKaryawan);
+
 penggajianRouter.post("/gaji", isLogin(), allowedRole("hrd"), AddGaji);
 
 module.exports = penggajianRouter;
