@@ -55,7 +55,7 @@ const getGajiByIdkaryawan = (id_users, month, year) => {
         }
         let hasil = { jam_lembur: result.rows[0].total_jam_lembur };
         const queryGetusers =
-          "select users.username,users.fullname,users.basic_salary,users.overtime_salary,division.position from users inner join division on division.id = users.id_division where users.id = $1";
+          "select users.username,users.fullname,users.bank_name,users.basic_salary,users.overtime_salary,division.position from users inner join division on division.id = users.id_division where users.id = $1";
         postgreDb.query(queryGetusers, [id_users], (err, result) => {
           if (err) {
             console.log(err);

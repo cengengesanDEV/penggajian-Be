@@ -91,7 +91,7 @@ const register = (body) => {
 const getDataById = (payload) => {
   return new Promise((resolve, reject) => {
     postgreDb.query(
-      "select users.id,users.email,users.fullname,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users inner join division on division.id = users.id_division where users.id = $1",
+      "select users.id,users.email,users.fullname,users.bank_name,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users inner join division on division.id = users.id_division where users.id = $1",
       [payload.userId],
       (err, result) => {
         if (err) {
@@ -110,7 +110,7 @@ const getDataById = (payload) => {
 const getDataKaryawanById = (id) => {
   return new Promise((resolve, reject) => {
     postgreDb.query(
-      "select users.id,users.email,users.fullname,users.username,users.id_division,users.note,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users inner join division on division.id = users.id_division where users.id = $1",
+      "select users.id,users.email,users.fullname,users.bank_name,users.username,users.id_division,users.note,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek from users inner join division on division.id = users.id_division where users.id = $1",
       [id],
       (err, result) => {
         if (err) {
@@ -129,9 +129,9 @@ const getDataKaryawanById = (id) => {
 const getDataAllKaryawan = (search) => {
   return new Promise((resolve, reject) => {
     let query =
-      "select users.id,users.email,users.fullname,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division from users join division on division.id = users.id_division";
+      "select users.id,users.email,users.fullname,users.bank_name,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division from users join division on division.id = users.id_division";
     if (query !== "") {
-      query = `select users.id,users.email,users.fullname,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division from users join division on division.id = users.id_division where users.fullname like '%${search}%'`;
+      query = `select users.id,users.email,users.fullname,users.bank_name,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division from users join division on division.id = users.id_division where users.fullname like '%${search}%'`;
     }
     console.log(query);
     postgreDb.query(query, [], (err, result) => {
@@ -166,7 +166,7 @@ const getDivision = () => {
 const getNameUsers = () => {
   return new Promise((resolve, reject) => {
     let query =
-      "select users.id,users.fullname,users.nik,division.position,users.address,users.role from users inner join division on division.id = users.id_division";
+      "select users.id,users.fullname,users.bank_name,users.nik,division.position,users.address,users.role from users inner join division on division.id = users.id_division";
     console.log(query);
     postgreDb.query(query, [], (err, result) => {
       if (err) {
