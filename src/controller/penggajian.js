@@ -75,6 +75,21 @@ const getPenggajian = async (req, res) => {
   }
 };
 
+const verifPenggajian = async (req, res) => {
+  try {
+    const { body } = req;
+    const response = await penggajianRepo.verif_gaji(
+      body.id_users,
+      body.month,
+      body.year
+    );
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const penggajianController = {
   AddLemburan,
   getLemburan,
@@ -82,6 +97,7 @@ const penggajianController = {
   AddGaji,
   gajiKaryawan,
   getPenggajian,
+  verifPenggajian,
 };
 
 module.exports = penggajianController;

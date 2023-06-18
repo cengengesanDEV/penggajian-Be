@@ -9,6 +9,7 @@ const {
   getLemburan,
   gajiKaryawan,
   getPenggajian,
+  verifPenggajian,
 } = require("../controller/penggajian.js");
 
 penggajianRouter.post(
@@ -30,6 +31,13 @@ penggajianRouter.get(
 penggajianRouter.get("/gaji-karyawan", isLogin(), gajiKaryawan);
 
 penggajianRouter.post("/gaji", isLogin(), allowedRole("hrd"), AddGaji);
+
+penggajianRouter.post(
+  "/verif_gaji",
+  isLogin(),
+  allowedRole("hrd"),
+  verifPenggajian
+);
 
 penggajianRouter.get("/data-penggajian", isLogin(), getPenggajian);
 
