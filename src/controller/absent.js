@@ -3,8 +3,13 @@ const sendResponse = require("../helper/sendResponse");
 
 const absentEntry = async (req, res) => {
   try {
-    const { userPayload } = req;
-    const response = await absentRepo.absentEntry(userPayload.userId);
+    const { userPayload, body } = req;
+    const response = await absentRepo.absentEntry(
+      userPayload.userId,
+      body.inTime,
+      body.late_time,
+      body.date
+    );
     sendResponse.success(res, response.status, response);
   } catch (error) {
     console.log("error ini:", error);
@@ -39,7 +44,10 @@ const absentNow = async (req, res) => {
 
 const absentOut = async (req, res) => {
   try {
-    const response = await absentRepo.absentOut(req.userPayload.userId);
+    const response = await absentRepo.absentOut(
+      req.userPayload.userId,
+      req.body.outTime
+    );
     sendResponse.success(res, response.status, response);
   } catch (error) {
     console.log(error);

@@ -1,22 +1,22 @@
 const postgreDb = require("../config/postgre.js");
-const moment = require("moment");
+// const moment = require("moment");
 
-const absentEntry = (payload) => {
+const absentEntry = (payload, time, late_hour, dateApp) => {
   return new Promise((resolve, reject) => {
     const query =
-      "insert into absensi(id_users,date,clock_in,status,description,created_at,updated_at) values($1,$2,$3,$4,$5,to_timestamp($6),to_timestamp($7)) returning *";
+      "insert into absensi(id_users,date,clock_in,status,description,late_hour,created_at,updated_at) values($1,$2,$3,$4,$5,$6,to_timestamp($7),to_timestamp($8)) returning *";
     const timestamp = Date.now() / 1000;
     const description = "-";
     const status = "masuk";
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
-    const dateApp = `${year}-${month + 1}-${day}`;
-    const time = moment().format("hh:mm:ss");
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    const second = date.getSeconds();
+    // const date = new Date();
+    // const year = date.getFullYear();
+    // const month = date.getMonth();
+    // const day = date.getDate();
+    // const dateApp = `${year}-${month + 1}-${day}`;
+    // const time = moment().format("hh:mm:ss");
+    // const hour = date.getHours();
+    // const minute = date.getMinutes();
+    // const second = date.getSeconds();
     // const time = `${hour}:${minute}:${second}`;
     const checkQuery =
       "select clock_in from absensi where id_users = $1 and absensi.date = $2";
@@ -31,7 +31,16 @@ const absentEntry = (payload) => {
       }
       postgreDb.query(
         query,
-        [payload, dateApp, time, status, description, timestamp, timestamp],
+        [
+          payload,
+          dateApp,
+          time,
+          status,
+          description,
+          late_hour,
+          timestamp,
+          timestamp,
+        ],
         (err, result) => {
           if (err) {
             console.log(err);
@@ -94,20 +103,20 @@ const absentEntryDesc = (payload, body) => {
   });
 };
 
-const absentOut = (userId) => {
+const absentOut = (userId, time, dateApp) => {
   return new Promise((resolve, reject) => {
     const query =
       "update absensi set clock_out = $1,updated_at = to_timestamp($2) where id_users = $3 and date = $4 returning *";
     const timestamp = Date.now() / 1000;
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
-    const dateApp = `${year}-${month + 1}-${day}`;
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    const second = date.getSeconds();
-    const time = `${hour}:${minute}:${second}`;
+    // const date = new Date();
+    // const year = date.getFullYear();
+    // const month = date.getMonth();
+    // const day = date.getDate();
+    // const dateApp = `${year}-${month + 1}-${day}`;
+    // const hour = date.getHours();
+    // const minute = date.getMinutes();
+    // const second = date.getSeconds();
+    // const time = `${hour}:${minute}:${second}`;
     const checkQuery =
       "select clock_in from absensi where id_users = $1 and absensi.date = $2";
     postgreDb.query(checkQuery, [userId, dateApp], (Error, result) => {
