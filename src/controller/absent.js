@@ -7,7 +7,7 @@ const absentEntry = async (req, res) => {
     const response = await absentRepo.absentEntry(
       userPayload.userId,
       body.inTime,
-      body.late_time,
+      body.lateTime,
       body.date
     );
     sendResponse.success(res, response.status, response);
