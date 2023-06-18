@@ -228,7 +228,7 @@ const getAbsenFilterDate = (id, month, year) => {
 
 const getAbsenById = (id, month, year) => {
   return new Promise((resolve, reject) => {
-    if (id === 0) {
+    if (id == 0) {
       return resolve({ status: 401, data: [] });
     }
     const prevDate =
