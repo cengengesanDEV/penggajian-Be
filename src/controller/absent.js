@@ -46,7 +46,8 @@ const absentOut = async (req, res) => {
   try {
     const response = await absentRepo.absentOut(
       req.userPayload.userId,
-      req.body.outTime
+      req.body.outTime,
+      req.body.date
     );
     sendResponse.success(res, response.status, response);
   } catch (error) {
