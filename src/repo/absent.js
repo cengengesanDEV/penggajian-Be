@@ -103,7 +103,7 @@ const absentEntryDesc = (payload, body) => {
   });
 };
 
-const absentOut = (userId, time, dateApp) => {
+const absentOut = (userId, dateApp) => {
   return new Promise((resolve, reject) => {
     const query =
       "update absensi set clock_out = $1,updated_at = to_timestamp($2) where id_users = $3 and date = $4 returning *";
