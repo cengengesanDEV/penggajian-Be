@@ -267,7 +267,6 @@ const getAbsenById = (id, month, year) => {
           position: variable.position,
           phone_number: variable.phone_number,
           address: variable.address,
-          basic_salary: variable.basic_salary,
           nik: variable.nik,
           birth_date: variable.birth_date,
           basic_salary: variable.basic_salary,
