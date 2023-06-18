@@ -270,6 +270,8 @@ const getAbsenById = (id, month, year) => {
           basic_salary: variable.basic_salary,
           nik: variable.nik,
           birth_date: variable.birth_date,
+          basic_salary: variable.basic_salary,
+          overtime_salary: variable.overtime_salary,
           data_absent: response,
         };
         const checkIzinQuery =
