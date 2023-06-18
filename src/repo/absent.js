@@ -1,4 +1,5 @@
 const postgreDb = require("../config/postgre.js");
+const moment = require("moment");
 
 const absentEntry = (payload) => {
   return new Promise((resolve, reject) => {
@@ -12,10 +13,11 @@ const absentEntry = (payload) => {
     const month = date.getMonth();
     const day = date.getDate();
     const dateApp = `${year}-${month + 1}-${day}`;
+    const time = moment().format("hh:mm:ss");
     const hour = date.getHours();
     const minute = date.getMinutes();
     const second = date.getSeconds();
-    const time = `${hour}:${minute}:${second}`;
+    // const time = `${hour}:${minute}:${second}`;
     const checkQuery =
       "select clock_in from absensi where id_users = $1 and absensi.date = $2";
     postgreDb.query(checkQuery, [payload, dateApp], (Error, result) => {
