@@ -85,6 +85,52 @@ const yangLain = (id_users, month, year) => {
   });
 };
 
+const getGajiAll = (month, year) => {
+  return new Promise((resolve, reject) => {
+    const queryGetKaryawan = "select * from users";
+    const getGaji =
+      "select * from penggajian where extract(month from date_paid) = $1 and extract(year from date_paid) = $2";
+    postgreDb.query(queryGetKaryawan, [], (err, res) => {
+      if (err) {
+        console.log(err);
+        return reject({ status: 500, msg: "internal server error" });
+      }
+      postgreDb.query(getGaji, [month, year], (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject({ status: 500, msg: "internal server error" });
+        }
+        console.log(result.rows);
+        console.log(res.rows);
+        res.rows.map((x) => {
+          if (!result.rows[0]) {
+            x.penggajian = { status: "belum terverifikasi" };
+          } else {
+            result.rows.map((v) => {
+              if (x.id === v.id_users) {
+                x.penggajian = v;
+              } else {
+                x.penggajian = { status: "belum diverifikasi" };
+              }
+            });
+          }
+        });
+        result.rows.map((v) => {
+          res.rows.map((x) => {
+            if (x.id === v.id_users) {
+              x.penggajian = v;
+            } else {
+              x.penggajian = { status: "belum diverifikasi" };
+            }
+          });
+        });
+
+        return resolve({ status: 200, msg: "document found", data: res.rows });
+      });
+    });
+  });
+};
+
 const getGajiByIdkaryawan = (id_users, month, year) => {
   return new Promise((resolve, reject) => {
     const query =
@@ -104,10 +150,19 @@ const addGaji = (body) => {
     const { id_users, tip, minus, total, date } = body;
     const timestamp = Date.now() / 1000;
     const query =
-      "insert into penggajian(id_users,tip_salary,minus_salary,total_salary,date_paid,created_at) values($1,$2,$3,$4,$5,to_timestamp($6))";
+      "insert into penggajian(id_users,tip_salary,minus_salary,total_salary,date_paid,status,created_at,updated_at) values($1,$2,$3,$4,$5,$6,to_timestamp($7),to_timestamp($8))";
     postgreDb.query(
       query,
-      [id_users, tip, minus, total, date, timestamp],
+      [
+        id_users,
+        tip,
+        minus,
+        total,
+        date,
+        "menunggu verifikasi",
+        timestamp,
+        timestamp,
+      ],
       (err) => {
         if (err) {
           console.log(err);
@@ -124,6 +179,7 @@ const lemburanRepo = {
   getLemburan,
   getGajiByIdkaryawan,
   addGaji,
+  getGajiAll,
 };
 
 module.exports = lemburanRepo;
