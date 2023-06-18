@@ -296,15 +296,49 @@ const getAbsenById = (id, month, year) => {
                 console.log(err);
                 return reject({ status: 500, msg: "internal server error" });
               }
-              responseData = {
-                ...responseData,
-                total_telat: response.rows[0].total_telat,
-              };
-              return resolve({
-                status: 200,
-                msg: "employee data found",
-                data: responseData,
-              });
+              if (!response.rows[0].total_telat) {
+                responseData = {
+                  ...responseData,
+                  total_telat: 0,
+                };
+              } else {
+                responseData = {
+                  ...responseData,
+                  total_telat: response.rows[0].total_telat,
+                };
+              }
+              const getLemburan =
+                "select sum(CAST(jam_lembur AS numeric)) as total_jam_lembur from lembur where id_users = $1 and date < $2 and date > $3";
+              postgreDb.query(
+                getLemburan,
+                [id, prevDate, date],
+                (err, response) => {
+                  if (err) {
+                    console.log(err);
+                    return reject({
+                      status: 500,
+                      msg: "internal server error",
+                    });
+                  }
+                  if (!response.rows[0].total_jam_lembur) {
+                    responseData = {
+                      ...responseData,
+                      total_jam_lembur: 0,
+                    };
+                  } else {
+                    responseData = {
+                      ...responseData,
+                      total_jam_lembur: 0,
+                    };
+                  }
+                  console.log(responseData);
+                  return resolve({
+                    status: 200,
+                    msg: "employee data found",
+                    data: responseData,
+                  });
+                }
+              );
             }
           );
         });
