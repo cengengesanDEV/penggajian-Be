@@ -105,7 +105,7 @@ const getGajiAll = (month, year) => {
         console.log(res.rows);
         res.rows.map((x) => {
           if (!result.rows[0]) {
-            x.penggajian = { status: "belum terverifikasi" };
+            x.penggajian = { status: "belum diverifikasi" };
           } else {
             result.rows.map((v) => {
               if (x.id === v.id_users) {
