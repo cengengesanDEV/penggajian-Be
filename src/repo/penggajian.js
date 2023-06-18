@@ -148,22 +148,13 @@ const getGajiByIdkaryawan = (id_users, month, year) => {
 
 const addGaji = (body) => {
   return new Promise((resolve, reject) => {
-    const { id_users, tip, minus, total, date } = body;
+    const { id_users, total, date } = body;
     const timestamp = Date.now() / 1000;
     const query =
-      "insert into penggajian(id_users,tip_salary,minus_salary,total_salary,date_paid,status,created_at,updated_at) values($1,$2,$3,$4,$5,$6,to_timestamp($7),to_timestamp($8))";
+      "insert into penggajian(id_users,total_salary,date_paid,status,created_at,updated_at) values($1,$2,$3,$4,to_timestamp($5),to_timestamp($6))";
     postgreDb.query(
       query,
-      [
-        id_users,
-        tip,
-        minus,
-        total,
-        date,
-        "menunggu verifikasi",
-        timestamp,
-        timestamp,
-      ],
+      [id_users, total, date, "menunggu verifikasi", timestamp, timestamp],
       (err) => {
         if (err) {
           console.log(err);
