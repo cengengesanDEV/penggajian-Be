@@ -166,7 +166,7 @@ const getDivision = () => {
 const getNameUsers = () => {
   return new Promise((resolve, reject) => {
     let query =
-      "select users.id,users.fullname,users.bank_name,users.nik,division.position,users.address,users.role from users inner join division on division.id = users.id_division";
+      "select users.id,users.fullname,users.bank_name,users.nik,division.position,users.address,users.role,users.overtime_salary,users.basic_salary from users inner join division on division.id = users.id_division";
     console.log(query);
     postgreDb.query(query, [], (err, result) => {
       if (err) {

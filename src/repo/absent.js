@@ -282,11 +282,28 @@ const getAbsenById = (id, month, year) => {
             jumlah_izin: result.rows[0].jumblah_izin,
             jumblah_sakit: result.rows[0].jumblah_sakit,
           };
-          return resolve({
-            status: 200,
-            msg: "employee data found",
-            data: responseData,
-          });
+
+          const queryCheckJumblahTelat =
+            "select sum(CAST(late_hour AS numeric)) as total_telat from absensi where id_users = $1 and date < $2 and date > $3";
+          postgreDb.query(
+            queryCheckJumblahTelat,
+            [id, prevDate, date],
+            (err, response) => {
+              if (err) {
+                console.log(err);
+                return reject({ status: 500, msg: "internal server error" });
+              }
+              responseData = {
+                ...responseData,
+                total_telat: response.rows[0].total_telat,
+              };
+              return resolve({
+                status: 200,
+                msg: "employee data found",
+                data: responseData,
+              });
+            }
+          );
         });
       });
     });
