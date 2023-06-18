@@ -88,7 +88,7 @@ const yangLain = (id_users, month, year) => {
 const getGajiAll = (month, year) => {
   return new Promise((resolve, reject) => {
     const queryGetKaryawan =
-      "select users.id,users.fullname,users.bank_name,users.nik,division.position,users.address,users.role from users inner join division on division.id = users.id_division";
+      "select users.id,users.fullname,users.bank_name,users.nik,division.position,users.address,users.role,users.basic_salary,users.overtime_salary from users inner join division on division.id = users.id_division";
     const getGaji =
       "select * from penggajian where extract(month from date_paid) = $1 and extract(year from date_paid) = $2";
     postgreDb.query(queryGetKaryawan, [], (err, res) => {
