@@ -261,6 +261,7 @@ const getAbsenById = (id, month, year) => {
         }
         const variable = result.rows[0];
         let responseData = {
+          id: variable.id,
           fullname: variable.fullname,
           email: variable.email,
           image: variable.image,
