@@ -253,7 +253,7 @@ const getAbsenById = (id, month, year) => {
         return reject({ status: 500, msg: "internal server error" });
       }
       const queryGetUsers =
-        "select users.id,users.email,users.fullname,users.bank_name,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.nik,users.birth_date from users inner join division on division.id = users.id_division where users.id = $1";
+        "select users.id,users.email,users.fullname,users.bank_name,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.nik,users.birth_date,users.overtime_salary from users inner join division on division.id = users.id_division where users.id = $1";
       postgreDb.query(queryGetUsers, [id], (err, result) => {
         if (err) {
           console.log(err);
