@@ -80,6 +80,7 @@ const verifPenggajian = async (req, res) => {
     const { body } = req;
     const response = await penggajianRepo.verif_gaji(
       body.id_users,
+      body.flag,
       body.month,
       body.year
     );
