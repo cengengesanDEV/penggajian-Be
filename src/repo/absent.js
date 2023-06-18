@@ -229,7 +229,7 @@ const getAbsenFilterDate = (id, month, year) => {
 const getAbsenById = (id, month, year) => {
   return new Promise((resolve, reject) => {
     if (id == 0) {
-      return resolve({ status: 401, data: [] });
+      return resolve({ status: 200, data: [] });
     }
     const prevDate =
       month == 1 ? `${year - 1}-12-25` : `${year}-${month - 1}-25`;
