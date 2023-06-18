@@ -30,7 +30,7 @@ penggajianRouter.get(
 
 penggajianRouter.get("/gaji-karyawan", isLogin(), gajiKaryawan);
 
-penggajianRouter.post("/gaji", isLogin(), allowedRole("hrd"), AddGaji);
+penggajianRouter.post("/gaji", isLogin(), allowedRole("admin"), AddGaji);
 
 penggajianRouter.post(
   "/verif_gaji",
