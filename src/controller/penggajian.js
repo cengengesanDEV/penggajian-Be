@@ -78,7 +78,7 @@ const getPenggajian = async (req, res) => {
 const verifPenggajian = async (req, res) => {
   try {
     const { body } = req;
-    const response = await penggajianRepo.verif_gaji(body.id, body.flag);
+    const response = await penggajianRepo.verif_gaji(body.flag, body.id);
     sendResponse.success(res, response.status, response);
   } catch (error) {
     console.log(error);
