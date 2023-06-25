@@ -170,7 +170,7 @@ const addGaji = (body) => {
 
 const verif_gaji = (flags, id) => {
   return new Promise((resolve, reject) => {
-    const accGaji = "update status set = $1 where id = $2";
+    const accGaji = "update penggajian set status = $1 where id = $2";
     const deleteGaji = "delete from penggajian where id = $1";
     if (flags === "0") {
       postgreDb.query(accGaji, ["terverifikasi", id], (err, res) => {
