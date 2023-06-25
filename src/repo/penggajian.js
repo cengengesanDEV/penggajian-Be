@@ -115,7 +115,7 @@ const getGajiAll = (month, year) => {
         });
         res.rows.map((v) => {
           if (!v.penggajian) {
-            v.pennggajian = { status: "belum diverifikasi" };
+            v.penggajian = { status: "belum diverifikasi" };
           }
         });
         // result.rows.map((v) => {
@@ -193,6 +193,12 @@ const verif_gaji = (id_users, flags, month, year) => {
     }
   });
 };
+
+// const getGajiByStatus = (month, year, status) => {
+//   return new Promise((resolve, reject) => {
+//     const query = 'select * from penggajian '
+//   });
+// };
 
 const lemburanRepo = {
   AddLemburan,
