@@ -102,7 +102,6 @@ const getGajiAll = (month, year) => {
           return reject({ status: 500, msg: "internal server error" });
         }
         console.log(result.rows);
-        console.log(res.rows);
         res.rows.map((x) => {
           if (!result.rows[0]) {
             x.penggajian = { status: "belum diverifikasi" };
@@ -110,21 +109,24 @@ const getGajiAll = (month, year) => {
             result.rows.map((v) => {
               if (x.id === v.id_users) {
                 x.penggajian = v;
-              } else {
-                x.penggajian = { status: "belum diverifikasi" };
               }
             });
           }
         });
-        result.rows.map((v) => {
-          res.rows.map((x) => {
-            if (x.id === v.id_users) {
-              x.penggajian = v;
-            } else {
-              x.penggajian = { status: "belum diverifikasi" };
-            }
-          });
+        res.rows.map((v) => {
+          if (!v.penggajian) {
+            v.pennggajian = { status: "belum diverifikasi" };
+          }
         });
+        // result.rows.map((v) => {
+        //   res.rows.map((x) => {
+        //     if (x.id === v.id_users) {
+        //       x.penggajian = v;
+        //     } else {
+        //       x.penggajian = { status: "belum diverifikasi" };
+        //     }
+        //   });
+        // });
 
         return resolve({ status: 200, msg: "document found", data: res.rows });
       });
