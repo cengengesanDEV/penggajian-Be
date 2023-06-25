@@ -211,6 +211,20 @@ const profile = (body, token) => {
   });
 };
 
+const getCountDivision = () => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "select d.position as division_name ,count(u.id) as users_count from users u join division d on u.id_division = d.id group by u.id_division,d.position";
+    postgreDb.query(query, [], (err, res) => {
+      if (err) {
+        console.log(err);
+        return reject({ status: 500, msg: "internal server error" });
+      }
+      return resolve({ status: 200, msg: "data found", data: res.rows });
+    });
+  });
+};
+
 const userRepo = {
   register,
   getDataById,
@@ -219,6 +233,7 @@ const userRepo = {
   getDataKaryawanById,
   getDivision,
   getNameUsers,
+  getCountDivision,
 };
 
 module.exports = userRepo;

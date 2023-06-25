@@ -29,6 +29,7 @@ const {
   getDivision,
   getNameUsers,
   profileKaryawan,
+  getCountDivision,
 } = require("../controller/users.js");
 
 usersRouter.post(
@@ -60,5 +61,7 @@ usersRouter.get("/division", getDivision);
 usersRouter.get("/name", getNameUsers);
 
 usersRouter.get("/karyawan/:id", getDataKaryawanById);
+
+usersRouter.get("/division", getCountDivision);
 
 module.exports = usersRouter;

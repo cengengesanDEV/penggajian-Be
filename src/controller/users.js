@@ -96,6 +96,16 @@ const profileKaryawan = async (req, res) => {
   }
 };
 
+const getCountDivision = async (req, res) => {
+  try {
+    const response = await userRepo.getCountDivision();
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const userController = {
   register,
   getDataById,
@@ -105,6 +115,7 @@ const userController = {
   getDivision,
   getNameUsers,
   profileKaryawan,
+  getCountDivision,
 };
 
 module.exports = userController;
