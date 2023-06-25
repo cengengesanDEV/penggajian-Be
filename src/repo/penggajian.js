@@ -172,8 +172,8 @@ const verif_gaji = (flags, id) => {
   return new Promise((resolve, reject) => {
     const accGaji = "update status set = $1 where id = $1";
     const deleteGaji = "delete from penggajian where id = $1";
-    if (flags) {
-      postgreDb.query(accGaji, [id_users, id], (err, res) => {
+    if (flags === "0") {
+      postgreDb.query(accGaji, [id], (err, res) => {
         if (err) {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
@@ -181,7 +181,7 @@ const verif_gaji = (flags, id) => {
         return resolve({ status: 200, msg: "gaji updated" });
       });
     } else {
-      postgreDb.query(deleteGaji, [id_users, id], (err, res) => {
+      postgreDb.query(deleteGaji, [id], (err, res) => {
         if (err) {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
