@@ -196,7 +196,7 @@ const getGajiByStatus = (month, year) => {
   return new Promise((resolve, reject) => {
     const status = "menunggu verifikasi";
     let query =
-      "select a.*,b.*,c.position from penggajian as a inner join users as b on b.id = a.id_users inner join division as c on b.id_division = c.id where a.status = $1";
+      "select a.*,b.*,c.position,a.id as id_penggajian from penggajian as a inner join users as b on b.id = a.id_users inner join division as c on b.id_division = c.id where a.status = $1";
     if (month && year) {
       query +=
         " and extract(month from date_paid) = $2 and extract(year from date_paid) = $3";
