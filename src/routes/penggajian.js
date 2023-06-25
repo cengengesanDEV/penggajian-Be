@@ -10,6 +10,7 @@ const {
   gajiKaryawan,
   getPenggajian,
   verifPenggajian,
+  getGajiByStatus,
 } = require("../controller/penggajian.js");
 
 penggajianRouter.post(
@@ -40,5 +41,6 @@ penggajianRouter.post(
 );
 
 penggajianRouter.get("/data-penggajian", isLogin(), getPenggajian);
+penggajianRouter.get("/get-verif-gaji", isLogin(), getGajiByStatus);
 
 module.exports = penggajianRouter;

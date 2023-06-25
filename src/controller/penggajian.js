@@ -91,6 +91,20 @@ const verifPenggajian = async (req, res) => {
   }
 };
 
+const getGajiByStatus = async (req, res) => {
+  try {
+    const { query } = req;
+    const response = await penggajianRepo.getGajiByStatus(
+      query.month,
+      query.year
+    );
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const penggajianController = {
   AddLemburan,
   getLemburan,
@@ -99,6 +113,7 @@ const penggajianController = {
   gajiKaryawan,
   getPenggajian,
   verifPenggajian,
+  getGajiByStatus,
 };
 
 module.exports = penggajianController;

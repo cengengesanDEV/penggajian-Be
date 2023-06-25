@@ -168,14 +168,12 @@ const addGaji = (body) => {
   });
 };
 
-const verif_gaji = (id_users, flags, month, year) => {
+const verif_gaji = (flags, id) => {
   return new Promise((resolve, reject) => {
-    const accGaji =
-      "update status set = $1 where id_users = $2 and extract(month from date_paid) = $3 and extract(year from date_paid) = $4";
-    const deleteGaji =
-      "delete from penggajian where id_users = $1 and extract(month from date_paid) = $2 and extract(year from date_paid) = $3";
+    const accGaji = "update status set = $1 where id = $1";
+    const deleteGaji = "delete from penggajian where id = $1";
     if (flags) {
-      postgreDb.query(accGaji, [id_users, month, year], (err, res) => {
+      postgreDb.query(accGaji, [id_users, id], (err, res) => {
         if (err) {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
@@ -183,7 +181,7 @@ const verif_gaji = (id_users, flags, month, year) => {
         return resolve({ status: 200, msg: "gaji updated" });
       });
     } else {
-      postgreDb.query(deleteGaji, [id_users, month, year], (err, res) => {
+      postgreDb.query(deleteGaji, [id_users, id], (err, res) => {
         if (err) {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
@@ -194,11 +192,33 @@ const verif_gaji = (id_users, flags, month, year) => {
   });
 };
 
-// const getGajiByStatus = (month, year, status) => {
-//   return new Promise((resolve, reject) => {
-//     const query = 'select * from penggajian '
-//   });
-// };
+const getGajiByStatus = (month, year) => {
+  return new Promise((resolve, reject) => {
+    const status = "menunggu verifikasi";
+    let query =
+      "select a.*,b.*,c.position from penggajian as a inner join users as b on b.id = a.id_users inner join division as c on b.id_division = c.id where a.status = $1";
+    if (month && year) {
+      query +=
+        " and extract(month from date_paid) = $2 and extract(year from date_paid) = $3";
+      console.log({ query });
+      postgreDb.query(query, [status, month, year], (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject({ status: 500, msg: "internal server error" });
+        }
+        return resolve({ status: 201, msg: "data found", data: result.rows });
+      });
+    } else {
+      postgreDb.query(query, [status], (err, result) => {
+        if (err) {
+          console.log(err);
+          return reject({ status: 500, msg: "internal server error" });
+        }
+        return resolve({ status: 201, msg: "data found", data: result.rows });
+      });
+    }
+  });
+};
 
 const lemburanRepo = {
   AddLemburan,
@@ -207,6 +227,7 @@ const lemburanRepo = {
   addGaji,
   getGajiAll,
   verif_gaji,
+  getGajiByStatus,
 };
 
 module.exports = lemburanRepo;
