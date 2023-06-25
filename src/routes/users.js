@@ -62,6 +62,6 @@ usersRouter.get("/name", getNameUsers);
 
 usersRouter.get("/karyawan/:id", getDataKaryawanById);
 
-usersRouter.get("/division", getCountDivision);
+usersRouter.get("/division/karyawan", getCountDivision);
 
 module.exports = usersRouter;
