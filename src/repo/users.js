@@ -146,6 +146,27 @@ const getDataAllKaryawan = (search) => {
     });
   });
 };
+
+const getDataAllRole = (search) => {
+  return new Promise((resolve, reject) => {
+    let query =
+      "select users.id,users.email,users.fullname,users.bank_name,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division from users join division on division.id = users.id_division";
+    if (query !== "") {
+      query = `select users.id,users.email,users.fullname,users.bank_name,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division from users join division on division.id = users.id_division where users.fullname like '%${search}%'`;
+    }
+    console.log(query);
+    postgreDb.query(query, [], (err, result) => {
+      if (err) {
+        console.log(err);
+        return reject({
+          status: 500,
+          msg: "internal server error",
+        });
+      }
+      resolve({ status: 200, msg: "data found", data: result.rows });
+    });
+  });
+};
 const getDivision = () => {
   return new Promise((resolve, reject) => {
     let query = "select * from division";
@@ -233,6 +254,7 @@ const userRepo = {
   getDataKaryawanById,
   getDivision,
   getNameUsers,
+  getDataAllRole,
   getCountDivision,
 };
 
