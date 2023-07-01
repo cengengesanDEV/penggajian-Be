@@ -30,6 +30,7 @@ const {
   getNameUsers,
   profileKaryawan,
   getCountDivision,
+  getDataAllRole,
 } = require("../controller/users.js");
 
 usersRouter.post(
@@ -55,6 +56,8 @@ usersRouter.patch(
 usersRouter.patch("/profile-karyawan", isLogin(), profileKaryawan);
 
 usersRouter.get("/all-karyawan", getDataAllKaryawan);
+
+usersRouter.get("/all-role", getDataAllRole);
 
 usersRouter.get("/division", getDivision);
 

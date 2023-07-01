@@ -36,6 +36,16 @@ const getDataAllKaryawan = async (req, res) => {
   }
 };
 
+const getDataAllRole = async (req, res) => {
+  try {
+    const response = await userRepo.getDataAllKaryawan(req.query.search);
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const getDataKaryawanById = async (req, res) => {
   try {
     const response = await userRepo.getDataKaryawanById(req.params.id);
@@ -116,6 +126,7 @@ const userController = {
   getNameUsers,
   profileKaryawan,
   getCountDivision,
+  getDataAllRole,
 };
 
 module.exports = userController;

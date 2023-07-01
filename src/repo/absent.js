@@ -201,7 +201,7 @@ const getAbsenFilterDate = (id, month, year) => {
       const prevDate = `${year}-${month - 1}-25`;
       const date = `${year}-${month}-25`;
       const query =
-        "select clock_in,clock_out,description,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date < $2 and date > $3 order by absensi.date asc";
+        "select clock_in,clock_out,description,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date <= $2 and date > $3 order by absensi.date asc";
       postgreDb.query(query, [id, date, prevDate], (err, result) => {
         let response = [];
         result.rows.forEach((value) => {
@@ -236,7 +236,7 @@ const getAbsenById = (id, month, year) => {
     console.log(month);
     const date = `${year}-${month}-25`;
     const query =
-      "select clock_in,clock_out,description,status,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date < $2 and date > $3 and clock_out is not null order by absensi.date asc";
+      "select clock_in,clock_out,description,status,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date <= $2 and date > $3 and clock_out is not null order by absensi.date asc";
     postgreDb.query(query, [id, date, prevDate], (err, result) => {
       let response = [];
       result?.rows?.forEach((value) => {
@@ -275,7 +275,7 @@ const getAbsenById = (id, month, year) => {
           data_absent: response,
         };
         const checkIzinQuery =
-          "SELECT COUNT(CASE WHEN absensi.status  = 'masuk' and absensi.clock_out is not null then 1 end) as jumblah_masuk,COUNT(CASE WHEN absensi.status  = 'izin' then 1 end) as jumblah_izin,COUNT(CASE WHEN absensi.status  = 'sakit' then 1 end) as jumblah_sakit from absensi where date < $1 and date > $2 and id_users = $3;";
+          "SELECT COUNT(CASE WHEN absensi.status  = 'masuk' and absensi.clock_out is not null then 1 end) as jumblah_masuk,COUNT(CASE WHEN absensi.status  = 'izin' then 1 end) as jumblah_izin,COUNT(CASE WHEN absensi.status  = 'sakit' then 1 end) as jumblah_sakit from absensi where date <= $1 and date > $2 and id_users = $3;";
         postgreDb.query(checkIzinQuery, [date, prevDate, id], (err, result) => {
           if (err) {
             console.log(err);
@@ -289,7 +289,7 @@ const getAbsenById = (id, month, year) => {
           };
 
           const queryCheckJumblahTelat =
-            "select sum(CAST(late_hour AS numeric)) as total_telat from absensi where id_users = $1 and date < $2 and date > $3";
+            "select sum(CAST(late_hour AS numeric)) as total_telat from absensi where id_users = $1 and date <= $2 and date > $3";
           postgreDb.query(
             queryCheckJumblahTelat,
             [id, prevDate, date],
@@ -310,7 +310,7 @@ const getAbsenById = (id, month, year) => {
                 };
               }
               const getLemburan =
-                "select sum(CAST(jam_lembur AS numeric)) as total_jam_lembur from lembur where id_users = $1 and date < $2 and date > $3";
+                "select sum(CAST(jam_lembur AS numeric)) as total_jam_lembur from lembur where id_users = $1 and date <= $2 and date > $3";
               postgreDb.query(
                 getLemburan,
                 [id, prevDate, date],
@@ -354,7 +354,7 @@ const getAbsenEmployee = (month, year) => {
     const prevDate = `${year}-${month - 1}-25`;
     const date = `${year}-${month}-25`;
     const query =
-      "SELECT users.fullname,COUNT(CASE WHEN absensi.description  = 'entry' then 1 end) as jumblah_masuk,COUNT(CASE WHEN absensi.description  = 'sick' then 1 end) as jumblah_izin from absensi join users on absensi.id_users  = users.id where absensi.date < $1 and absensi.date > $2 group by users.fullname ;";
+      "SELECT users.fullname,COUNT(CASE WHEN absensi.description  = 'entry' then 1 end) as jumblah_masuk,COUNT(CASE WHEN absensi.description  = 'sick' then 1 end) as jumblah_izin from absensi join users on absensi.id_users  = users.id where absensi.date <= $1 and absensi.date > $2 group by users.fullname ;";
     postgreDb.query(query, [date, prevDate], (err, result) => {
       if (err) {
         console.log(err);
