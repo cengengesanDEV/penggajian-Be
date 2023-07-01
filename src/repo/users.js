@@ -252,7 +252,7 @@ const updateSuspend = (flags, id) => {
   return new Promise((resolve, reject) => {
     const query = "update users set suspend = $1 where id = $2";
     if (flags == "0") {
-      postgreDb.query(query, ["active"], (err, res) => {
+      postgreDb.query(query, ["active", id], (err, res) => {
         if (err) {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
@@ -260,7 +260,7 @@ const updateSuspend = (flags, id) => {
         return resolve({ status: 200, msg: "activating users success" });
       });
     } else {
-      postgreDb.query(query, ["deactive"], (err, res) => {
+      postgreDb.query(query, ["deactive", id], (err, res) => {
         if (err) {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
