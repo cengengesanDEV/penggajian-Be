@@ -97,10 +97,7 @@ const getGajiByIdkaryawan = (id_users, month, year) => {
         console.log(err);
         return reject({ status: 500, msg: "internal server error" });
       }
-      if (!result.rows[0]) {
-        result.rows[0] = {};
-      }
-      return resolve({ status: 201, data: result.rows });
+      return resolve({ status: 201, data: result.rows[0] });
     });
   });
 };
