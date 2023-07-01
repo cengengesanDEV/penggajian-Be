@@ -97,6 +97,20 @@ const getGajiByIdkaryawan = (id_users, month, year) => {
         console.log(err);
         return reject({ status: 500, msg: "internal server error" });
       }
+      return resolve({ status: 201, data: result.rows });
+    });
+  });
+};
+
+const getGajiByIdHrd = (id_users, month, year) => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "select a.*,b.* from penggajian a inner join users b on a.id_users = b.id where a.id_users = $1 and extract(month from a.date_paid) = $2 and extract(year from a.date_paid) = $3";
+    postgreDb.query(query, [id_users, month, year], (err, result) => {
+      if (err) {
+        console.log(err);
+        return reject({ status: 500, msg: "internal server error" });
+      }
       return resolve({ status: 201, data: result.rows[0] });
     });
   });
@@ -182,6 +196,7 @@ const lemburanRepo = {
   getGajiAll,
   verif_gaji,
   getGajiByStatus,
+  getGajiByIdHrd,
 };
 
 module.exports = lemburanRepo;

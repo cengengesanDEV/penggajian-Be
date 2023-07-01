@@ -56,7 +56,7 @@ const gajiKaryawan = async (req, res) => {
 const gajiKaryawanExcel = async (req, res) => {
   try {
     const { query } = req;
-    const response = await penggajianRepo.getGajiByIdkaryawan(
+    const response = await penggajianRepo.getGajiByIdHrd(
       query.id,
       query.month,
       query.year
