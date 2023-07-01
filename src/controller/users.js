@@ -38,7 +38,7 @@ const getDataAllKaryawan = async (req, res) => {
 
 const getDataAllRole = async (req, res) => {
   try {
-    const response = await userRepo.getDataAllKaryawan(req.query.search);
+    const response = await userRepo.getDataAllRole(req.query.search);
     sendResponse.success(res, response.status, response);
   } catch (error) {
     console.log(error);
