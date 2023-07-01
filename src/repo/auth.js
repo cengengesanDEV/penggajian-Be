@@ -10,7 +10,7 @@ const login = (body) => {
     const jwtr = new JWTR(client);
     console.log(email);
     const getPasswordsByEmailValues =
-      "select id,email ,fullname, password, role from users where email = $1";
+      "select id,email ,fullname, password, role , suspend from users where email = $1";
     const getPasswordsEmailValues = [email];
     postgreDb.query(
       getPasswordsByEmailValues,
@@ -20,9 +20,14 @@ const login = (body) => {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
         }
-        console.log(response.rows);
         if (response.rows.length === 0)
           return reject({ status: 401, msg: "email or password wrong" });
+        if (response.rows[0].suspend === "deactive") {
+          return reject({
+            status: 401,
+            msg: "Your account has been suspended, please contact HR",
+          });
+        }
         // 3. Process Login => create jwt => return jwt to users
         const payload = {
           userId: response.rows[0].id,
