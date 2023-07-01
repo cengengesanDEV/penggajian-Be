@@ -11,6 +11,7 @@ const {
   getPenggajian,
   verifPenggajian,
   getGajiByStatus,
+  gajiKaryawanExcel,
 } = require("../controller/penggajian.js");
 
 penggajianRouter.post(
@@ -30,6 +31,8 @@ penggajianRouter.get(
 );
 
 penggajianRouter.get("/gaji-karyawan", isLogin(), gajiKaryawan);
+
+penggajianRouter.get("/gaji-excel", isLogin(), gajiKaryawanExcel);
 
 penggajianRouter.post("/gaji", isLogin(), allowedRole("admin"), AddGaji);
 

@@ -53,6 +53,21 @@ const gajiKaryawan = async (req, res) => {
   }
 };
 
+const gajiKaryawanExcel = async (req, res) => {
+  try {
+    const { query } = req;
+    const response = await penggajianRepo.getGajiByIdkaryawan(
+      query.id,
+      query.month,
+      query.year
+    );
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const AddGaji = async (req, res) => {
   try {
     const { body } = req;
@@ -109,6 +124,7 @@ const penggajianController = {
   getPenggajian,
   verifPenggajian,
   getGajiByStatus,
+  gajiKaryawanExcel,
 };
 
 module.exports = penggajianController;
