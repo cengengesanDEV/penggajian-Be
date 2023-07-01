@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt"); // kon
 
 const register = (body) => {
   return new Promise((resolve, reject) => {
-    let query = `insert into users(email,nik,username,fullname,password,image,id_division,role,phone_number,address,basic_salary,overtime_salary,note,birth_date,norek,created_at,updated_at) values($1, $2,$3 ,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,to_timestamp($16),to_timestamp($17))`;
+    let query = `insert into users(email,nik,username,fullname,password,image,id_division,role,phone_number,address,basic_salary,overtime_salary,note,birth_date,norek,suspend,created_at,updated_at) values($1, $2,$3 ,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,to_timestamp($17),to_timestamp($18))`;
     const {
       email,
       nik,
@@ -64,6 +64,7 @@ const register = (body) => {
               note,
               birth_date,
               norek,
+              "active",
               timestamp,
               timestamp,
             ],
@@ -150,9 +151,9 @@ const getDataAllKaryawan = (search) => {
 const getDataAllRole = (search) => {
   return new Promise((resolve, reject) => {
     let query =
-      "select users.id,users.email,users.fullname,users.bank_name,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division from users join division on division.id = users.id_division";
+      "select users.id,users.email,users.fullname,users.bank_name,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division,users.suspend from users join division on division.id = users.id_division";
     if (query !== "") {
-      query = `select users.id,users.email,users.fullname,users.bank_name,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division from users join division on division.id = users.id_division where users.fullname like '%${search}%'`;
+      query = `select users.id,users.email,users.fullname,users.bank_name,users.username,users.image,division.position,users.role,users.phone_number,users.address,users.basic_salary,users.overtime_salary,users.birth_date,users.nik,users.norek,users.id_division,users.suspend from users join division on division.id = users.id_division where users.fullname like '%${search}%'`;
     }
     console.log(query);
     postgreDb.query(query, [], (err, result) => {
@@ -167,6 +168,7 @@ const getDataAllRole = (search) => {
     });
   });
 };
+
 const getDivision = () => {
   return new Promise((resolve, reject) => {
     let query = "select * from division";
@@ -246,6 +248,29 @@ const getCountDivision = () => {
   });
 };
 
+const updateSuspend = (flags, id) => {
+  return new Promise((resolve, reject) => {
+    const query = "update users set suspend = $1 where id = $2";
+    if (flags == "0") {
+      postgreDb.query(query, ["active"], (err, res) => {
+        if (err) {
+          console.log(err);
+          return reject({ status: 500, msg: "internal server error" });
+        }
+        return resolve({ status: 200, msg: "activating users success" });
+      });
+    } else {
+      postgreDb.query(query, ["deactive"], (err, res) => {
+        if (err) {
+          console.log(err);
+          return reject({ status: 500, msg: "internal server error" });
+        }
+        return resolve({ status: 200, msg: "deactivating users success" });
+      });
+    }
+  });
+};
+
 const userRepo = {
   register,
   getDataById,
@@ -256,6 +281,7 @@ const userRepo = {
   getNameUsers,
   getDataAllRole,
   getCountDivision,
+  updateSuspend,
 };
 
 module.exports = userRepo;

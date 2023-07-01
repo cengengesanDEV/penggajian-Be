@@ -116,6 +116,17 @@ const getCountDivision = async (req, res) => {
   }
 };
 
+const updateSuspend = async (req, res) => {
+  try {
+    const { body } = req;
+    const response = await userRepo.updateSuspend(body.flags, body.id);
+    sendResponse.success(res, response.status, response);
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(res, error.status, error);
+  }
+};
+
 const userController = {
   register,
   getDataById,
@@ -127,6 +138,7 @@ const userController = {
   profileKaryawan,
   getCountDivision,
   getDataAllRole,
+  updateSuspend,
 };
 
 module.exports = userController;

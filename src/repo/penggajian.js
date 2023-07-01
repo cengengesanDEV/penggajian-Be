@@ -41,7 +41,7 @@ const getLemburan = (date) => {
 const getGajiAll = (month, year) => {
   return new Promise((resolve, reject) => {
     const queryGetKaryawan =
-      "select users.id,users.fullname,users.bank_name,users.nik,division.position,users.address,users.role,users.basic_salary,users.overtime_salary from users inner join division on division.id = users.id_division where users.role != 'hrd'";
+      "select users.id,users.fullname,users.bank_name,users.nik,division.position,users.address,users.role,users.basic_salary,users.overtime_salary,users.suspend from users inner join division on division.id = users.id_division where users.role != 'hrd'";
     const getGaji =
       "select * from penggajian where extract(month from date_paid) = $1 and extract(year from date_paid) = $2";
     postgreDb.query(queryGetKaryawan, [], (err, res) => {
@@ -57,7 +57,11 @@ const getGajiAll = (month, year) => {
         console.log(result.rows);
         res.rows.map((x) => {
           if (!result.rows[0]) {
-            x.penggajian = { status: "belum diverifikasi" };
+            if (v.suspend !== "active") {
+              v.penggajian = { status: "out" };
+            } else {
+              v.penggajian = { status: "belum diverifikasi" };
+            }
           } else {
             result.rows.map((v) => {
               if (x.id === v.id_users) {
@@ -68,7 +72,11 @@ const getGajiAll = (month, year) => {
         });
         res.rows.map((v) => {
           if (!v.penggajian) {
-            v.penggajian = { status: "belum diverifikasi" };
+            if (v.suspend !== "active") {
+              v.penggajian = { status: "out" };
+            } else {
+              v.penggajian = { status: "belum diverifikasi" };
+            }
           }
         });
         // result.rows.map((v) => {
