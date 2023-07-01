@@ -54,15 +54,8 @@ const getGajiAll = (month, year) => {
           console.log(err);
           return reject({ status: 500, msg: "internal server error" });
         }
-        console.log(result.rows);
         res.rows.map((x) => {
-          if (!result.rows[0]) {
-            if (v.suspend !== "active") {
-              v.penggajian = { status: "out" };
-            } else {
-              v.penggajian = { status: "belum diverifikasi" };
-            }
-          } else {
+          if (result.rows[0]) {
             result.rows.map((v) => {
               if (x.id === v.id_users) {
                 x.penggajian = v;
