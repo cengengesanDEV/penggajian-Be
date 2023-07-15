@@ -97,7 +97,33 @@ const getGajiByIdkaryawan = (id_users, month, year) => {
         console.log(err);
         return reject({ status: 500, msg: "internal server error" });
       }
-      return resolve({ status: 201, data: result.rows });
+      const getLemburan =
+        "select SUM(CAST(jam_lembur AS numeric)) as total_jam_lembur from lembur where id_users = $1 and date <= $2 and date > $3";
+      postgreDb.query(getLemburan, [id, date, prevDate], (err, response) => {
+        if (err) {
+          console.log(err);
+          return reject({
+            status: 500,
+            msg: "internal server error",
+          });
+        }
+        if (!result.rows[0]) {
+          return resolve({ status: 200, data: [] });
+        }
+        let responseData = {};
+        if (!response.rows[0].total_jam_lembur) {
+          responseData = {
+            ...result.rows[0],
+            total_jam_lembur: 0,
+          };
+        } else {
+          responseData = {
+            ...result.rows[0],
+            total_jam_lembur: Number(response.rows[0].total_jam_lembur),
+          };
+        }
+        return resolve({ status: 200, data: [responseData] });
+      });
     });
   });
 };
