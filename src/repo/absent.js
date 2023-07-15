@@ -330,10 +330,9 @@ const getAbsenById = (id, month, year) => {
                   } else {
                     responseData = {
                       ...responseData,
-                      total_jam_lembur: 0,
+                      total_jam_lembur: response.rows[0].total_jam_lembur,
                     };
                   }
-                  console.log(responseData);
                   return resolve({
                     status: 200,
                     msg: "employee data found",
