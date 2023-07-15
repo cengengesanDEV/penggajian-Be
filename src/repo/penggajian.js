@@ -92,6 +92,9 @@ const getGajiByIdkaryawan = (id_users, month, year) => {
   return new Promise((resolve, reject) => {
     const query =
       "select * from penggajian where id_users = $1 and extract(month from date_paid) = $2 and extract(year from date_paid) = $3";
+    const prevDate =
+      month == 1 ? `${year - 1}-12-25` : `${year}-${month - 1}-25`;
+    const date = `${year}-${month}-25`;
     postgreDb.query(query, [id_users, month, year], (err, result) => {
       if (err) {
         console.log(err);
