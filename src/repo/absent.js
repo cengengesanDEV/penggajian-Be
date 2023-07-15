@@ -233,7 +233,6 @@ const getAbsenById = (id, month, year) => {
     }
     const prevDate =
       month == 1 ? `${year - 1}-12-25` : `${year}-${month - 1}-25`;
-    console.log(month);
     const date = `${year}-${month}-25`;
     const query =
       "select clock_in,clock_out,description,status,extract(year from date) as year,extract(month from date) as month,extract(day from date) as day from absensi where id_users = $1 and date <= $2 and date > $3 and clock_out is not null order by absensi.date asc";
@@ -292,7 +291,7 @@ const getAbsenById = (id, month, year) => {
             "select sum(CAST(late_hour AS numeric)) as total_telat from absensi where id_users = $1 and date <= $2 and date > $3";
           postgreDb.query(
             queryCheckJumblahTelat,
-            [id, prevDate, date],
+            [id, date, prevDate],
             (err, response) => {
               if (err) {
                 console.log(err);
@@ -310,10 +309,10 @@ const getAbsenById = (id, month, year) => {
                 };
               }
               const getLemburan =
-                "select sum(CAST(jam_lembur AS numeric)) as total_jam_lembur from lembur where id_users = $1 and date <= $2 and date > $3";
+                "select SUM(CAST(jam_lembur AS numeric)) as total_jam_lembur from lembur where id_users = $1 and date <= $2 and date > $3";
               postgreDb.query(
                 getLemburan,
-                [id, prevDate, date],
+                [id, date, prevDate],
                 (err, response) => {
                   if (err) {
                     console.log(err);
@@ -330,7 +329,9 @@ const getAbsenById = (id, month, year) => {
                   } else {
                     responseData = {
                       ...responseData,
-                      total_jam_lembur: response.rows[0].total_jam_lembur,
+                      total_jam_lembur: Number(
+                        response.rows[0].total_jam_lembur
+                      ),
                     };
                   }
                   return resolve({
