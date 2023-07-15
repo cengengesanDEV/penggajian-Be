@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt"); // kon
 
 const register = (body) => {
   return new Promise((resolve, reject) => {
-    let query = `insert into users(email,nik,username,fullname,password,image,id_division,role,phone_number,address,basic_salary,overtime_salary,note,birth_date,norek,suspend,created_at,updated_at) values($1, $2,$3 ,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,to_timestamp($17),to_timestamp($18))`;
+    let query = `insert into users(email,nik,username,fullname,password,image,id_division,role,phone_number,address,basic_salary,overtime_salary,note,birth_date,norek,bank_name,suspend,created_at,updated_at) values($1, $2,$3 ,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,to_timestamp($18),to_timestamp($19))`;
     const {
       email,
       nik,
@@ -13,6 +13,7 @@ const register = (body) => {
       id_division,
       phone_number,
       address,
+      bank_name,
       basic_salary,
       overtime_salary,
       role,
@@ -65,6 +66,7 @@ const register = (body) => {
               birth_date,
               norek,
               "active",
+              bank_name,
               timestamp,
               timestamp,
             ],
