@@ -3,7 +3,6 @@ const path = require("path");
 
 const limits = {
   fileSize: 2e6,
-  file,
 };
 const fileFilter = (req, file, cb) => {
   const ext = path.extname(file.originalname);
