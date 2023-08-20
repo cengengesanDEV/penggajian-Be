@@ -1,5 +1,6 @@
 const userRepo = require("../repo/users");
 const sendResponse = require("../helper/sendResponse");
+const Information = require('../helper/Information')
 
 const register = async (req, res) => {
   try {
@@ -127,6 +128,42 @@ const updateSuspend = async (req, res) => {
   }
 };
 
+
+const SendInformation = async (req, res) => {
+  try {
+    const { body } = req;
+    const response = await userRepo.sendEmail()
+    console.log("first", response)
+    for (let e of response.data){
+      const setSendEmail = {
+        to: e.email,
+        subject: "Information",
+        mail: e.email,
+        template: "Information.html",
+        email: `${e.email}`,
+        desc: `${body.desc}`
+      };
+      await Information.sendInformation(setSendEmail);
+    }
+    // await response.data.map((e) => {
+    //   const setSendEmail = {
+    //     to: e,
+    //     subject: "Information",
+    //     mail:'vihal76261@backva.com',
+    //     template: "Information.html",
+    //     email: `${e}`,
+    //     desc: `${body.desc}`
+    //   };
+    //   Information.sendInformation(setSendEmail);
+    // })
+    await sendResponse.success(res, response.status, response);
+    
+  } catch (error) {
+    console.log(error)
+    sendResponse.error(res, error.status, error);
+  }
+}
+
 const userController = {
   register,
   getDataById,
@@ -139,6 +176,7 @@ const userController = {
   getCountDivision,
   getDataAllRole,
   updateSuspend,
+  SendInformation
 };
 
 module.exports = userController;

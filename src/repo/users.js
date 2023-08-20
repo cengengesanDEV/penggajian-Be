@@ -273,6 +273,22 @@ const updateSuspend = (flags, id) => {
   });
 };
 
+
+const sendEmail = () => {
+  return new Promise((resolve, reject) => {
+    const query = 'select email from users'
+
+    postgreDb.query(query, [], (err, res) => {
+      if (err) {
+        console.log(err);
+        return reject({ status: 500, msg: "internal server error" });
+      }
+      return resolve({status: 200, msg: 'Success send information', data:res.rows})
+    })
+
+  })
+}
+
 const userRepo = {
   register,
   getDataById,
@@ -284,6 +300,7 @@ const userRepo = {
   getDataAllRole,
   getCountDivision,
   updateSuspend,
+  sendEmail,
 };
 
 module.exports = userRepo;

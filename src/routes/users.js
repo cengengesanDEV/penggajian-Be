@@ -32,6 +32,7 @@ const {
   getCountDivision,
   getDataAllRole,
   updateSuspend,
+  SendInformation
 } = require("../controller/users.js");
 
 usersRouter.post(
@@ -69,5 +70,7 @@ usersRouter.get("/karyawan/:id", getDataKaryawanById);
 usersRouter.get("/division/karyawan", getCountDivision);
 
 usersRouter.patch("/suspend", updateSuspend);
+
+usersRouter.post("/sendInformation", SendInformation);
 
 module.exports = usersRouter;
