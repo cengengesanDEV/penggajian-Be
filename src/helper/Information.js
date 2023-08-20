@@ -41,8 +41,6 @@ module.exports = {
         "utf8"
       );
 
-      console.log(fileTemplate);
-
       const mailOptions = {
         from: '"Penggajian" <nyengircengengesan@gmail.com>', // sender address
         to: data.to, // list of receivers

@@ -133,7 +133,6 @@ const SendInformation = async (req, res) => {
   try {
     const { body } = req;
     const response = await userRepo.sendEmail()
-    console.log("first", response)
     for (let e of response.data){
       const setSendEmail = {
         to: e.email,
@@ -144,18 +143,8 @@ const SendInformation = async (req, res) => {
         desc: `${body.desc}`
       };
       await Information.sendInformation(setSendEmail);
+      console.log('success',e.email)
     }
-    // await response.data.map((e) => {
-    //   const setSendEmail = {
-    //     to: e,
-    //     subject: "Information",
-    //     mail:'vihal76261@backva.com',
-    //     template: "Information.html",
-    //     email: `${e}`,
-    //     desc: `${body.desc}`
-    //   };
-    //   Information.sendInformation(setSendEmail);
-    // })
     await sendResponse.success(res, response.status, response);
     
   } catch (error) {
